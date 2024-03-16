@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <h1>Gericht hinzufügen</h1>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ dish_add_view_form }}
+            <button type="submit">Hinzufügen</button>
+        </form>
+    </body>
+</html>

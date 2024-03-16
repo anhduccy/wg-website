@@ -17,8 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from app.views import user_view
+from app.views import dish_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('users/', user_view.users, name='users')
+    path('users/', user_view.users, name='users'),
+    path('dish/add/', dish_view.dish_add_view, name='add')
 ]

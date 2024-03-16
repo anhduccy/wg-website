@@ -1,7 +1,12 @@
 from django import forms
-from app.models import User
+from app.models import *
 
-class UserForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput)
+
+class DishForm(forms.ModelForm):
+    name = forms.CharField(widget=forms.TextInput, required=True)
+    proximityDuration = forms.IntegerField(widget=forms.NumberInput)
+    description = forms.CharField(widget=forms.Textarea)
+
     class Meta:
-        model = User
+        model = Dish
+        fields = ('name', 'proximityDuration', 'description')

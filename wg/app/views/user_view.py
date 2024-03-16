@@ -6,5 +6,5 @@ from app.models import User
 def users(request):
     users = User.objects.all()
     context = {'users': users}
-    template = loader.get_template('users.html')
+    template = loader.get_template('user_view.html')
     return HttpResponse(template.render(context=context, request=request))
