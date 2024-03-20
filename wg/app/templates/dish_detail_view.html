@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
     <body>
-        <p>{{ dish.name }}</p>
-        <p>{{ dish.proximityDuration }}</p>
-        <p>{{ dish.description }}</p>
-        
+        <form method="post">
+            {% csrf_token %}
+            <p>{{ dish_edit_form }}</p>
+            <button type="submit">Speichern</button>
+            <a href= "{% url 'dishes' %}">Zurück</a>
+        </form>
     </body>
 </html>

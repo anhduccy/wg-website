@@ -5,8 +5,9 @@
 
         <form method="post">
             {% csrf_token %}
-            {{ dish_add_view_form }}
+            {{ dish_add_form }}
             <button type="submit">Hinzufügen</button>
+            <a href ="{% url 'dishes' %}">Zurück</a>
         </form>
     </body>
 </html>
