@@ -1,5 +1,9 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
+    <head>
+        <link rel="stylesheet" href="{% static 'main.css' %}">
+    </head>
     <body>
         <h1><b>Alle Nutzer</b></h1>
         {% for user in users %}

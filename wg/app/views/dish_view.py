@@ -13,14 +13,14 @@ def edit_view(request):
     else:
         form = DishForm()
     context = {'dish_add_form': form}
-    template = loader.get_template("dish_edit_view.html")
+    template = loader.get_template("dishes/dish_edit_view.html")
     return HttpResponse(template.render(request=request, context=context))
 
 def list_view(request): 
     dishes = Dish.objects.all()
 
     context = {'dishes': dishes}
-    template = loader.get_template("dish_view.html")
+    template = loader.get_template("dishes/dish_view.html")
     return HttpResponse(template.render(request=request, context=context))
 
 
@@ -33,7 +33,7 @@ def detail_view(request, id_dish):
     else:
         form = DishForm(instance=dish)
 
-    template = loader.get_template("dish_detail_view.html")
+    template = loader.get_template("dishes/dish_detail_view.html")
     context = {'dish_edit_form': form}
 
     return HttpResponse(template.render(request=request, context=context))

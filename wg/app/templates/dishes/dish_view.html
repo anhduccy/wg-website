@@ -1,0 +1,14 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="{% static 'main.css' %}">
+    </head>
+    <body>
+        <h1>Alle Gerichte</h1>
+        <h3><a href="{% url 'dishes-add' %}">Gericht hinzufügen</a></h3>
+        {% for dish in dishes %}
+        <a href="{{ dish.get_absolute_url }}" class="row">{{ dish.name }}</a> <br> <br>
+        {% endfor %}
+    </body>
+</html>
