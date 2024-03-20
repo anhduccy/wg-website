@@ -13,7 +13,7 @@ def edit_view(request):
     else:
         form = DishForm()
     context = {'dish_add_form': form}
-    template = loader.get_template("dish_add_view.html")
+    template = loader.get_template("dish_edit_view.html")
     return HttpResponse(template.render(request=request, context=context))
 
 def list_view(request): 
