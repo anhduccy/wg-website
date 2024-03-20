@@ -24,3 +24,7 @@ class Dish(models.Model):
     class Meta:
         managed = True
         db_table = 'Dish'
+    
+    def get_absolute_url(self):
+        return reverse('dishes-detail', args=[self.id_dish])
+    

@@ -23,6 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', user_view.users, name='users'),
     path('dishes/', dish_view.list_view, name = 'dishes'),
-    path('dishes/<pk>', dish_view.DishDetailView.as_view(), name = 'dishes-detail'),
-    path('dish/add/', dish_view.add_view, name='dish-add')
+    path('dishes/<id_dish>', dish_view.detail_view, name='dishes-detail'),
+    path('dishes/add/', dish_view.add_view, name='dishes-add')
 ]

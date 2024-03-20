@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 from django.template import loader
 from django.views.generic.detail import DetailView
 from app.models import Dish
@@ -29,4 +30,11 @@ class DishDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
-    
+
+def detail_view(request, id_dish):
+    dish = get_object_or_404(Dish, pk=id_dish)
+
+    template = loader.get_template("dish_detail_view.html")
+    context = {'dish': dish}
+
+    return HttpResponse(template.render(request=request, context=context))
