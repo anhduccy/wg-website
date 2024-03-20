@@ -3,7 +3,7 @@
     <body>
         <h1>Alle Gerichte</h1>
         {% for dish in dishes %}
-        <p>{{ dish.name }}</p>
+        <a href="{{dish.id_dish}}">{{ dish.name }}</a>
         {% endfor %}
     </body>
 </html>

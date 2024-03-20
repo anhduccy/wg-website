@@ -1,10 +1,11 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import loader
+from django.views.generic.detail import DetailView
 from app.models import Dish
 from wg.forms import DishForm
 
-def dish_add_view(request):
+def add_view(request):
     if request.method == "POST":
         form = DishForm(request.POST)
         form.save()
@@ -14,8 +15,18 @@ def dish_add_view(request):
     template = loader.get_template("dish_add_view.html")
     return HttpResponse(template.render(request=request, context=context))
 
-def dish_view(request): 
+def list_view(request): 
     dishes = Dish.objects.all()
+
     context = {'dishes': dishes}
     template = loader.get_template("dish_view.html")
     return HttpResponse(template.render(request=request, context=context))
+
+class DishDetailView(DetailView):
+    model = Dish
+    template_name = "dish_detail_view.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+    

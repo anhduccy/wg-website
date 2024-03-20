@@ -21,7 +21,8 @@ from app.views import dish_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('users/', user_view.users, name='Nutzer'),
-    path('dishes/', dish_view.dish_view, name = 'Gerichte'),
-    path('dish/add/', dish_view.dish_add_view, name='Gericht hinzufügen')
+    path('users/', user_view.users, name='users'),
+    path('dishes/', dish_view.list_view, name = 'dishes'),
+    path('dishes/<pk>', dish_view.DishDetailView.as_view(), name = 'dishes-detail'),
+    path('dish/add/', dish_view.add_view, name='dish-add')
 ]
