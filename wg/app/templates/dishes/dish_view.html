@@ -5,10 +5,23 @@
         <link rel="stylesheet" href="{% static 'main.css' %}">
     </head>
     <body>
-        <h1>Alle Gerichte</h1>
-        <h3><a href="{% url 'dishes-add' %}">Gericht hinzufügen</a></h3>
-        {% for dish in dishes %}
-        <a href="{{ dish.get_absolute_url }}" class="row">{{ dish.name }}</a> <br> <br>
-        {% endfor %}
+        <h1>ALLE GERICHTE</h1>
+        <h3><a href="{% url 'dishes-add' %}" class="btn">Gericht hinzufügen</a></h3>
+        <div class="list">
+            <table>
+            <td>
+                {% for dish in dishes %}
+                <tr>
+                    <div class="row">
+                        <a href="{{ dish.get_absolute_url }}">
+                            <p class="p-headline">{{ dish.name }}</p>
+                            <p>Zubereitungszeit: {{dish.proximityDuration}} Minuten</p>
+                        </a>
+                    </div>
+                </tr>
+                {% endfor %}
+            </td>
+            </table>
+        </div>
     </body>
 </html>
