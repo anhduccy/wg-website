@@ -24,5 +24,5 @@ urlpatterns = [
     path('users/', user_view.users, name='users'),
     path('dishes/', dish_view.list_view, name = 'dishes'),
     path('dishes/<id_dish>', dish_view.detail_view, name='dishes-detail'),
-    path('dishes/add/', dish_view.edit_view, name='dishes-add')
+    path('dishes/add/', dish_view.detail_view, name='dishes-add')
 ]
