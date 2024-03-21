@@ -1,5 +1,5 @@
 body {
-    font-family:  'Avenir Next';
+    font-family: 'Avenir Next';
     background: #F3F2ED;
     padding: 2% 5%;
 }
@@ -10,19 +10,18 @@ h1 {
     margin-bottom: 0;
 }
 
-h1, a, .row, .btn:hover{
+h1, a, .row{
     color: #006400;
 }
 
 a {
     text-decoration: none;
-    font-weight: 700;
+    font-weight: 500;
 }
 
 a:hover {
      text-decoration: underline;
 }
-
 
 .btn {
     background: #006400;
@@ -31,8 +30,28 @@ a:hover {
     border: solid 1px #F3F2ED;
     border-radius: 1000em;
     font-size: medium;
-    transition-duration: 0.2s;
     font-weight: 500;
+}
+
+.btn-back {
+    color: gray;
+    font-size: medium;
+    text-decoration: none;
+    background: none;
+    border: none;
+}
+
+.btn:hover, .btn-back:hover, .btn-delete:hover{
+    text-decoration: underline;
+}
+
+.btn-delete {
+    background-color: #F3F2ED;
+    color: red;
+    border: none;
+    font-size: medium;
+    font-weight: 500;
+    margin-left: 1em;
 }
 
 p {
@@ -44,12 +63,6 @@ p {
     font-weight: bold;
 }
 
-.btn:hover {
-    background: #F3F2ED;
-    border: solid 1px #006400;
-    text-decoration: none;
-}
-
 .list {
     margin-top: 4em;
 }
@@ -59,4 +72,9 @@ p {
     padding: 0.75em 1.5em;
     border-radius: 1em;
     margin-bottom: 1.5em;
+}
+
+button {
+    font-family: 'Avenir Next';
+    font-weight: 500;
 }

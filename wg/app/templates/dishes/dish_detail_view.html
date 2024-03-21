@@ -3,13 +3,15 @@
 <html>
     <head>
         <link rel="stylesheet" href="{% static 'main.css' %}">
+        <link rel="stylesheet" href="{% static 'forms.css' %}">
     </head>
     <body>
+        <a class="btn-2" href="{% url 'dishes' %}">Zurück</a>
         <form method="post">
             {% csrf_token %}
-            <p>{{ dish_edit_form }}</p>
-            <button type="submit">Speichern</button>
-            <a href= "{% url 'dishes' %}">Zurück</a>
+            {{ dish_edit_form }}
+            <button type="submit" name="save" class="btn">Speichern</button>
+            <button type="submit" name="delete" class="btn-delete">Löschen</button>
         </form>
     </body>
 </html>

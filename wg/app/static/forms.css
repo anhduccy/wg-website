@@ -1,0 +1,54 @@
+body {
+    padding: 5% 5%;
+}
+
+.form-headline, .form-textfield {
+    width: 100%
+}
+
+.form-headline{
+    color: #006400; 
+    background: #F3F2ED;
+    border: none;
+    margin-bottom: 0.1em;
+}
+
+.form-headline, .form-number {
+    font-weight: bold;
+}
+
+.form-number, .form-textfield{
+    font-family: 'Avenir Next';
+    color: #006400; 
+    border: none;}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number]{
+    -moz-appearance: textfield;
+}
+
+.form-headline {
+    font-size: 2.5em;
+    font-family: 'Futura';  
+    text-transform: uppercase; 
+}
+
+.form-textfield {
+    font-size: medium;
+    border-radius: 1em;
+    padding: 1.5em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.form-number {
+    font-size: 1.5em;
+    border-radius: 0.4em;
+    padding: 0.25em 0.5em;
+    width: 5vw
+}
