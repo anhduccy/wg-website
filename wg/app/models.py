@@ -14,10 +14,26 @@ class User(models.Model):
         managed = True
         db_table = 'User'
 
+    def __str__(self):
+        return self.name
+
+class DishType(models.Model):
+    id_dishType = models.BigAutoField(primary_key = True)
+    string = models.CharField(max_length=45)
+
+    class Meta:
+        managed = True
+        db_table = 'DishType'
+    
+    def __str__(self):
+        return self.string
+
 
 class Dish(models.Model):
     id_dish = models.BigAutoField(primary_key = True)
     name = models.CharField(max_length=100)
+    chef = models.ForeignKey("User", on_delete=models.CASCADE, db_column='chef')
+    dishType = models.ForeignKey("DishType", on_delete=models.CASCADE, db_column='dishType')
     proximityDuration = models.IntegerField()
     description = models.CharField(max_length=10000)
 
