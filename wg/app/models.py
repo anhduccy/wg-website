@@ -43,4 +43,12 @@ class Dish(models.Model):
     
     def get_absolute_url(self):
         return reverse('dishes-detail', args=[self.id_dish])
-    
+
+class Dishplan(models.Model):
+    id_dishplan = models.BigAutoField(primary_key=True)
+    date = models.DateField()
+    dish = models.ForeignKey("Dish", on_delete=models.SET_NULL, db_column='dish')
+
+    class Meta:
+        managed = True
+        db_table = 'Dishplan'
