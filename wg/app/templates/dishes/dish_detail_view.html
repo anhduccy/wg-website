@@ -5,8 +5,10 @@
         <link rel="stylesheet" href="{% static 'main.css' %}">
         <link rel="stylesheet" href="{% static 'forms.css' %}">
     </head>
-    <body>
-        <a class="btn-2" href="{% url 'dishes' %}">Zurück</a>
+    <body> 
+        {% block content %}
+        {% include 'sidebar.html' %}
+        {% endblock content %}
         <form method="post">
             {% csrf_token %}
             {{ dish_edit_form }}

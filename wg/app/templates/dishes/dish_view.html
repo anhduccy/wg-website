@@ -5,6 +5,10 @@
         <link rel="stylesheet" href="{% static 'main.css' %}">
     </head>
     <body>
+        {% block content %}
+        {% include 'sidebar.html' %}
+        {% endblock content %}
+
         <h1 style="text-transform: uppercase;">Alle Gerichte</h1>
         <h3><a href="{% url 'dishes-add' %}" class="btn">Gericht hinzufügen</a></h3>
         <div class="list">
