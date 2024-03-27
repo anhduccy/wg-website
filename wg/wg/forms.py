@@ -15,4 +15,12 @@ class DishForm(forms.ModelForm):
         model = Dish
         fields = ('name', 'proximityDuration', 'dishType', 'description', 'chef')
 
+
+class DishplanSettingsForm(forms.ModelForm):
+    dishType = forms.ModelChoiceField(queryset=DishType.objects.all(), required=True, label='', widget=forms.Select(attrs={'class': 'form-choicefield'}))
+
+    class Meta:
+        model = DishplanSettings
+        fields = ('dishType', )
+
     

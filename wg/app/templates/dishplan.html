@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="{% static 'main.css' %}">
+        <link rel="stylesheet" href="{% static 'forms.css' %}">
+    </head>
+    <body>
+        {% block content %}
+        {% include 'sidebar.html' %}
+        {% endblock content %}
+        <h1>WOCHENPLAN</h1>
+        <table style="width: 100%;">
+            <tr>
+                {% for weekday, date, weekday_dishType_form in weekday_dishType_forms %}
+                <td>
+                    <form method="post">
+                        {{ weekday_dishType_form }}
+                    </form>
+                    <h3>{{ weekday }}<h3>
+                    <p>{{ date }}</p>
+                </td>
+                {% endfor %}
+            </tr>
+        </table>
+    </body>
+</html>

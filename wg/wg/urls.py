@@ -18,11 +18,13 @@ from django.contrib import admin
 from django.urls import path
 from app.views import user_view
 from app.views import dish_view
+from app.views import dishplan_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', user_view.users, name='users'),
     path('dishes/', dish_view.list_view, name = 'dishes'),
     path('dishes/<id_dish>', dish_view.detail_view, name='dishes-detail'),
-    path('dishes/add/', dish_view.detail_view, name='dishes-add')
+    path('dishes/add/', dish_view.detail_view, name='dishes-add'),
+    path('dishplan', dishplan_view.view, name='dishplan')
 ]
