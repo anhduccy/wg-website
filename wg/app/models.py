@@ -36,6 +36,7 @@ class Dish(models.Model):
     dishType = models.ForeignKey("DishType", on_delete=models.CASCADE, db_column='dishType')
     proximityDuration = models.IntegerField()
     description = models.CharField(max_length=10000)
+    counter = models.IntegerField()
 
     class Meta:
         managed = True

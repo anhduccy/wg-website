@@ -10,23 +10,31 @@ from app.models import DishplanSettings
 from wg.forms import DishplanSettingsForm
 
 def view(request):
+    #dishplan_settings
+    dishplan_settings = [None] * 7
+    for i in range(0,7):
+        weekday_obj = DishplanSettings.objects.get(pk=i)
+        weekday = weekday_obj.weekday
+        dishplan_settings[i] = (weekday, DishplanSettingsForm(instance=weekday_obj))
+
+        if request == 'POST':
+            dishplan_settings[i] = DishplanSettingsForm(request)
+            dishplan_settings[i].save()
+
+    #dishplan
     date_today = date.today()
     week = [None] * 7
-    forms = [None] * 7
+    dishplan_header = [None] * 7
     for i in range (0,7):
         date_next = date_today + timedelta(days=i)
         date_dishType = DishplanSettings.objects.get(pk=date_next.weekday())
-        forms[i] = (date_dishType.weekday, date_next , DishplanSettingsForm(instance=date_dishType))
+        dishplan_header[i] = (date_dishType.weekday, date_next)
         dishType = DishType.objects.get(pk=date_dishType.dishType.id_dishType)  
-    randomChoice()
-
-    if request == 'POST':
-        form = DishplanSettingsForm(request)
-        form.save()
+        randomChoice()
         
 
     template = loader.get_template("dishplan.html")
-    context = {'weekday_dishType_forms': forms}
+    context = {'dishplan_header': dishplan_header, 'dishplan_settings': dishplan_settings}
 
     return HttpResponse(template.render(context=context))
 
@@ -42,8 +50,6 @@ def randomChoice():
         if dishType.get('dcount') < weekday_dishType_counter: #IF Anzahl der Gerichte des Gerichtsartes KLEINER ALS Anzahl der Wochentage, im dem die Gerichtsart vorkommt
             dishes = Dish.objects.filter(pk=dishType.get('dishType'))
             c = choice(dishes)
-            print(c.name)
-        else:
-            print('False')
+
 
     

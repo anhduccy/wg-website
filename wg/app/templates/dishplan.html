@@ -10,18 +10,38 @@
         {% include 'sidebar.html' %}
         {% endblock content %}
         <h1>WOCHENPLAN</h1>
+        <button class="btn" onclick=editMode()>Bearbeiten</button>
+        <div class="popup" id="isInEditMode">
+            {% for weekday, form in dishplan_settings %}
+            <table>
+                <tr>
+                    <td style="width: 50%;"><h3 class="h3-popup">{{ weekday }}</h3></td>
+                    <td style="width: 50%;"><form method="post">{{ form }}</form></td>
+                </tr>
+            </table>
+            {% endfor %}
+        </div>
+
         <table style="width: 100%;">
             <tr>
-                {% for weekday, date, weekday_dishType_form in weekday_dishType_forms %}
+                {% for weekday, date in dishplan_header %}
                 <td>
-                    <form method="post">
-                        {{ weekday_dishType_form }}
-                    </form>
                     <h3>{{ weekday }}<h3>
-                    <p>{{ date }}</p>
+                    <p class="p-date">{{ date }}</p>
                 </td>
                 {% endfor %}
             </tr>
         </table>
+
+        <script>
+            function editMode(){
+                var x = document.getElementById("isInEditMode");
+                if(x.style.display === "none"){
+                    x.style.display = "block";
+                } else {
+                    x.style.display = "none";
+                }
+            }
+        </script>
     </body>
 </html>

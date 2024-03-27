@@ -26,5 +26,5 @@ urlpatterns = [
     path('dishes/', dish_view.list_view, name = 'dishes'),
     path('dishes/<id_dish>', dish_view.detail_view, name='dishes-detail'),
     path('dishes/add/', dish_view.detail_view, name='dishes-add'),
-    path('dishplan', dishplan_view.view, name='dishplan')
+    path('', dishplan_view.view, name='dishplan')
 ]
