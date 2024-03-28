@@ -3,12 +3,9 @@
         <td>
             <a href="{{ dish.get_absolute_url }}">
                 <p class="p-headline">{{ dish.name }}</p>
-                <p>Zubereitungszeit: {{dish.proximityDuration}} Minuten</p>
+
+                <p>{{ dish.dishType }} &nbsp; | &nbsp; Zubereitungszeit: {{dish.proximityDuration}} Minuten</p>
             </a>
-        </td>
-        
-        <td>
-            <p>{{ dish.id_dishType.string }}</p>
         </td>
     </tr>
 </table>
