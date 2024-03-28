@@ -25,7 +25,6 @@ def detail_view(request, id_dish=None):
     if request.method == "POST":
         form = DishForm(request.POST, instance=dish)
         if 'save' in request.POST:
-            print(form)
             form.save()
         elif 'delete' in request.POST:
             dish.delete()
