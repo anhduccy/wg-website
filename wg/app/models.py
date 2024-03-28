@@ -63,3 +63,27 @@ class DishplanSettings(models.Model):
     class Meta:
         managed = True
         db_table = 'DishplanSettings'
+
+
+class Task(models.Model):
+    id_task = models.BigAutoField(primary_key = True)
+    title = models.CharField()
+    #frequency
+    responsibility = models.ForeignKey("User", on_delete=models.CASCADE, db_column='responsibility')
+    points = models.IntegerField()
+    isDone = models.BooleanField()
+
+    class Meta:
+        managed = True
+        db_table = 'Task'
+
+
+class TaskEvent(models.Model):
+    id_taskEvent = models.BigAutoField(primary_key=True)
+    date = models.DateField()
+    task = models.ForeignKey("Task", on_delete=models.CASCADE, db_column='task')
+
+    class Meta:
+        managed = True
+        db_table = 'TaskEvent'
+
