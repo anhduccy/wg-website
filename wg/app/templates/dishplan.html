@@ -10,27 +10,41 @@
         {% include 'sidebar.html' %}
         {% endblock content %}
         <h1>WOCHENPLAN</h1>
+        <!--
         <button class="btn" onclick=editMode()>Bearbeiten</button>
         <div class="popup" id="isInEditMode">
-            {% for weekday, form in dishplan_settings %}
-            <table>
-                <tr>
-                    <td style="width: 50%;"><h3 class="h3-popup">{{ weekday }}</h3></td>
-                    <td style="width: 50%;"><form method="post">{{ form }}</form></td>
-                </tr>
-            </table>
-            {% endfor %}
+                {% for weekday, form in dishplan_settings %}
+                <table>
+                    <tr>
+                        <td style="width: 50%;"><h3 class="h3-popup">{{ weekday }}</h3></td>
+                        <td style="width: 50%;">{{ form }}</td>
+                    </tr>
+                </table>
+                {% endfor %}
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn-popup">Speichern</button>
+            </form>
         </div>
+        -->
 
         <table style="width: 100%;">
-            <tr>
-                {% for weekday, date in dishplan_header %}
-                <td>
-                    <h3>{{ weekday }}<h3>
-                    <p class="p-date">{{ date }}</p>
-                </td>
-                {% endfor %}
-            </tr>
+            {% for weekday, date, dishType, dish in dishplan %}
+                <tr>
+                    <td>
+                        <h3>{{ weekday }}<h3>
+                        <p class="p-date">{{ date }}</p>
+                    </td>
+                    <td>
+                        {% if dish is None %}
+                            <p class="p-date">Keine Gerichte für {{ dishType.string }} eingetragen</p>
+                        {% else %}
+                            {% include 'dish_card.html' %}
+                        {% endif %}
+                    </td>
+                </tr>
+                
+            {% endfor %}
         </table>
 
         <script>

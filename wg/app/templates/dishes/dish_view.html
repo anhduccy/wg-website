@@ -15,22 +15,7 @@
             <table>
             <td>
                 {% for dish in dishes %}
-                <tr>
-                    <table class="row" width="100%">
-                        <tr>
-                            <td>
-                                <a href="{{ dish.get_absolute_url }}">
-                                    <p class="p-headline">{{ dish.name }}</p>
-                                    <p>Zubereitungszeit: {{dish.proximityDuration}} Minuten</p>
-                                </a>
-                            </td>
-                            
-                            <td>
-                                <p>{{ dish.id_dishType.string }}</p>
-                            </td>
-                        </tr>
-                    </table>
-                </tr>
+                <tr>{% include 'dish_card.html'%}</tr>
                 {% endfor %}
             </td>
             </table>
