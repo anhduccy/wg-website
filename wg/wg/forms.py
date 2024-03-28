@@ -29,4 +29,13 @@ class DishplanSettingsForm(forms.ModelForm):
         item.dishType = self.cleaned_data['dishType']
         item.save()
 
+class TaskForm(forms.ModelForm):
+    title = forms.CharField(required=True, label='')
+    responsibility = forms.ModelChoiceField(queryset=User.objects.all(), required=True, label='')
+    points = forms.IntegerField(required=True)
+    isDone = forms.CheckboxInput()
+    
+    class Meta:
+        model = Task
+        fields = ('title', 'responsibility', 'points', 'isDone')
     

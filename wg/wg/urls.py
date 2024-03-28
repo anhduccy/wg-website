@@ -16,15 +16,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from app.views import user_view
-from app.views import dish_view
-from app.views import dishplan_view
+from app.views import user_view, dish_view, dishplan_view, task_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', user_view.users, name='users'),
+
+    path('', dishplan_view.view, name='dishplan'),
+
     path('dishes/', dish_view.list_view, name = 'dishes'),
     path('dishes/<id_dish>', dish_view.detail_view, name='dishes-detail'),
     path('dishes/add/', dish_view.detail_view, name='dishes-add'),
-    path('', dishplan_view.view, name='dishplan')
+
+    path('tasks/', task_view.list_view, name='tasks'),
+    path('tasks/<id_task>', task_view.detail_view, name='tasks-detail'),
+    path('tasks/add/', task_view.detail_view, name = 'tasks-add')
 ]

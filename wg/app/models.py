@@ -67,7 +67,7 @@ class DishplanSettings(models.Model):
 
 class Task(models.Model):
     id_task = models.BigAutoField(primary_key = True)
-    title = models.CharField()
+    title = models.CharField(max_length=45)
     #frequency
     responsibility = models.ForeignKey("User", on_delete=models.CASCADE, db_column='responsibility')
     points = models.IntegerField()
