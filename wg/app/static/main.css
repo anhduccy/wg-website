@@ -1,13 +1,24 @@
 body {
     font-family: 'Avenir Next';
     background: #F3F2ED;
-    padding: 2% 5%;
+    padding: 1% 5%;
 }
+
+.header {
+    position: sticky;
+    top: 2em;
+    width: 100%;
+    background: #F3F2ED;
+}
+
+.content {
+    padding-top: 1em;
+}
+
 
 h1 {
     font-size: 3.5em;
     font-family: 'Futura';
-    margin-bottom: 1em;
 }
 
 h1, h3, a, .row{
@@ -59,7 +70,8 @@ a:hover {
 }
 
 .btn-back {
-    color: gray;
+    margin-left: 1em;
+    color: gray !important;
     font-size: medium;
     text-decoration: none;
     background: none;

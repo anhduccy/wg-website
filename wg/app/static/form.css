@@ -1,7 +1,3 @@
-body {
-    padding: 5% 5%;
-}
-
 .form-headline, .form-textfield {
     width: 100%
 }
@@ -10,6 +6,8 @@ body {
     color: #006400; 
     background: #F3F2ED;
     border: none;
+    font-size: 3.5em;
+    font-family: 'Avenir Next';   
 }
 
 .form-headline, .form-number {
@@ -31,12 +29,6 @@ input[type=number]{
     -moz-appearance: textfield;
 }
 
-.form-headline {
-    font-size: 2.5em;
-    font-family: 'Futura';  
-    text-transform: uppercase; 
-}
-
 .form-textfield {
     font-size: medium;
     border-radius: 1em;
@@ -44,6 +36,7 @@ input[type=number]{
 }
 
 .form-number {
+    margin-top: 1em;
     font-size: 1.5em;
     border-radius: 0.4em;
     padding: 0.25em 0.5em;

@@ -3,17 +3,23 @@
 <html>
     <head>
         <link rel="stylesheet" href="{% static 'main.css' %}">
-        <link rel="stylesheet" href="{% static 'forms.css' %}">
+        <link rel="stylesheet" href="{% static 'form.css' %}">
     </head>
     <body> 
-        {% block content %}
-        {% include 'sidebar.html' %}
-        {% endblock content %}
-        <form method="post">
-            {% csrf_token %}
-            {{ dish_edit_form }}
-            <button type="submit" name="save" class="btn">Speichern</button>
-            <button type="submit" name="delete" class="btn-delete">Löschen</button>
-        </form>
+        <div class="header">
+            {% block content %}
+            {% include 'sidebar.html' %}
+            {% endblock content %}
+        </div>
+        
+        <div class="content" style="margin-top: 2em;">
+            <form method="post">
+                {% csrf_token %}
+                {{ dish_edit_form }}
+                <button type="submit" name="save" class="btn">Speichern</button>
+                <button type="submit" name="delete" class="btn-delete">Löschen</button>
+                <a href="{% url 'dishes' %}" class="btn-back">Zurück</a>
+            </form>
+        </div>
     </body>
 </html>

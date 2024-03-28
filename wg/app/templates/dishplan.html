@@ -3,13 +3,14 @@
 <html>
     <head>
         <link rel="stylesheet" href="{% static 'main.css' %}">
-        <link rel="stylesheet" href="{% static 'forms.css' %}">
     </head>
     <body>
-        {% block content %}
-        {% include 'sidebar.html' %}
-        {% endblock content %}
-        <h1>WOCHENPLAN</h1>
+        <div class="header">
+            {% block content %}
+            {% include 'sidebar.html' %}
+            {% endblock content %}
+            <h1>WOCHENPLAN</h1>
+        </div>
         <!--
         <button class="btn" onclick=editMode()>Bearbeiten</button>
         <div class="popup" id="isInEditMode">
@@ -28,24 +29,26 @@
         </div>
         -->
 
-        <table style="width: 100%; margin-top: 1em;">
-            {% for weekday, date, dishType, dish in dishplan %}
-                <tr>
-                    <td>
-                        <h3>{{ weekday }}<h3>
-                        <p class="p-date">{{ date }}</p>
-                    </td>
-                    <td>
-                        {% if dish is None %}
-                            <p class="row">Keine Gerichte für den "{{ dishType.string }}"-Tag eingetragen</p>
-                        {% else %}
-                            {% include 'dish_card.html' %}
-                        {% endif %}
-                    </td>
-                </tr>
-                
-            {% endfor %}
-        </table>
+        <div class="content">
+            <table style="width: 100%; margin-top: 1em;">
+                {% for weekday, date, dishType, dish in dishplan %}
+                    <tr>
+                        <td>
+                            <h3>{{ weekday }}<h3>
+                            <p class="p-date">{{ date }}</p>
+                        </td>
+                        <td>
+                            {% if dish is None %}
+                                <p class="row">Keine Gerichte für den "{{ dishType.string }}"-Tag eingetragen</p>
+                            {% else %}
+                                {% include 'dish_card.html' %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    
+                {% endfor %}
+            </table>
+        </div>
 
         <script>
             function editMode(){
