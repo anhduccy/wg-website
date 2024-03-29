@@ -44,7 +44,7 @@ class CustomCheckboxInput(forms.CheckboxInput):
     template_name = "checkbox.html"
 
 class TaskCheckboxForm(forms.ModelForm):
-    isDone = forms.BooleanField(required=True, label='', widget=CustomCheckboxInput(attrs={'onclick': 'this.form.submit();'}))
+    isDone = forms.BooleanField(required=False, label='', widget=CustomCheckboxInput(attrs={'onclick': 'this.form.submit();'}))
 
     class Meta:
         model = Task

@@ -1,24 +1,28 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.template import loader
+from django.forms import modelformset_factory
 
 from app.models import Task
 from wg.forms import TaskForm, TaskCheckboxForm
 
 def list_view(request):
     #list_view
-    tasks = []
-    for task in Task.objects.all():
-        task_checkbox_form = TaskCheckboxForm(instance=task)
-        task_tuple = (task_checkbox_form, task)
-        tasks.append(task_tuple)
+    tasks = Task.objects.all()
+    
+    TaskFormSet = modelformset_factory(model=Task, form=TaskCheckboxForm, extra=0, fields = ('isDone',))
+    formset = TaskFormSet()
 
-        if request.method == "POST":
-            task_checkbox_form = TaskCheckboxForm(request.POST, instance=task)
-            print(task_checkbox_form)
-            task_checkbox_form.save()
+    if request.method == "POST":
+        formset = TaskFormSet(request.POST)
+        if formset.is_valid():
+            instances = formset.save(commit=False)
+            for form in formset:
+                form.save()
 
-    context = {'tasks': tasks}
+    formset = TaskFormSet()
+
+    context = {'formset': formset}
     template = loader.get_template("tasks/task_view.html")
     return HttpResponse(template.render(request=request, context=context))
 

@@ -17,17 +17,19 @@
             <div class="list">
                 <table>
                     <td>
-                        {% for checkbox, task in tasks %}
-                            <tr>{% include 'task_card.html' %}</tr>
-                        {% endfor %}
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ formset.management_form }}
+                            {% for form in formset %}
+                                <tr>{% include 'task_card.html' %}</tr>
+                                {% for hidden in form.hidden_fields %}
+                                    {{ hidden }}
+                                {% endfor %}
+                            {% endfor %}
+                        </form>
                     </td>
                 </table>
             </div>
-        </div>
-
-
-        <div class="popup">
-            
         </div>
     </body>
 </html>

@@ -1,15 +1,12 @@
 <table class="row" style="width: 100%">
-    <tr>
+    <tr>  
         <td style="width: 60px">
-            <form method="post">
-                {% csrf_token %}
-                {{ checkbox }}
-            </form>
+            {{ form.isDone }}
         </td>
         <td>
-            <a href="{{ task.get_absolute_url }}">
-                <p class="p-headline">{{ task.title }}</p>
-                <p>{{ task.responsibility }}</p>
+            <a href="{{ form.instance.get_absolute_url }}">
+                <p class="p-headline">{{ form.instance.title }}</p>
+                <p>{{ form.instance.responsibility }}</p>
             </a>
         </td>
     </tr>
