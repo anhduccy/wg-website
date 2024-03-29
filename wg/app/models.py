@@ -71,7 +71,7 @@ class Task(models.Model):
     #frequency
     responsibility = models.ForeignKey("User", on_delete=models.CASCADE, db_column='responsibility')
     points = models.IntegerField()
-    isDone = models.BooleanField()
+    isDone = models.BooleanField(default=0)
 
     class Meta:
         managed = True

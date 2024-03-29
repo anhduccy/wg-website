@@ -9,9 +9,14 @@ def list_view(request):
     #list_view
     tasks = []
     for task in Task.objects.all():
-        task_checkbox = TaskCheckboxForm(instance=task)
-        task_tuple = (task_checkbox, task)
+        task_checkbox_form = TaskCheckboxForm(instance=task)
+        task_tuple = (task_checkbox_form, task)
         tasks.append(task_tuple)
+
+        if request.method == "POST":
+            task_checkbox_form = TaskCheckboxForm(request.POST, instance=task)
+            print(task_checkbox_form)
+            task_checkbox_form.save()
 
     context = {'tasks': tasks}
     template = loader.get_template("tasks/task_view.html")

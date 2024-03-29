@@ -1,7 +1,10 @@
 <table class="row" style="width: 100%">
     <tr>
-        <td>
-            {{ checkbox }}
+        <td style="width: 60px">
+            <form method="post">
+                {% csrf_token %}
+                {{ checkbox }}
+            </form>
         </td>
         <td>
             <a href="{{ task.get_absolute_url }}">

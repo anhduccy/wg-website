@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import widgets
 from django.utils.safestring import mark_safe
+from django.template import loader
 from app.models import *
 
 class DishForm(forms.ModelForm):
@@ -33,15 +34,17 @@ class TaskForm(forms.ModelForm):
     title = forms.CharField(required=True, label='', widget=forms.TextInput(attrs={'placeholder': 'Aufgabe', 'class': 'form-headline'}))
     responsibility = forms.ModelChoiceField(queryset=User.objects.all(), required=True, label='', widget=forms.Select(attrs={'class': 'form-choicefield'}))
     points = forms.IntegerField(required=True, label='', widget=forms.NumberInput(attrs={'placeholder': 'Punkte', 'class': 'form-number'}))
-    isDone = forms.CheckboxInput()
+    isDone = forms.BooleanField()
     
     class Meta:
         model = Task
         fields = ('title', 'points', 'responsibility', 'isDone')
 
+class CustomCheckboxInput(forms.CheckboxInput):
+    template_name = "checkbox.html"
 
 class TaskCheckboxForm(forms.ModelForm):
-    isDone = forms.CheckboxInput()
+    isDone = forms.BooleanField(required=True, label='', widget=CustomCheckboxInput(attrs={'onclick': 'this.form.submit();'}))
 
     class Meta:
         model = Task
