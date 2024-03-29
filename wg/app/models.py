@@ -77,6 +77,9 @@ class Task(models.Model):
         managed = True
         db_table = 'Task'
 
+    def get_absolute_url(self):
+        return reverse('tasks-detail', args=[self.id_task])
+
 
 class TaskEvent(models.Model):
     id_taskEvent = models.BigAutoField(primary_key=True)

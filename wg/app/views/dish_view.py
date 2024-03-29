@@ -1,8 +1,7 @@
 from django.http import HttpResponse
-from django.shortcuts import render
-from django.shortcuts import get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.template import loader
-from django.shortcuts import redirect
+
 from app.models import *
 from app.models import Dish
 from wg.forms import DishForm

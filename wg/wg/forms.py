@@ -30,12 +30,20 @@ class DishplanSettingsForm(forms.ModelForm):
         item.save()
 
 class TaskForm(forms.ModelForm):
-    title = forms.CharField(required=True, label='')
-    responsibility = forms.ModelChoiceField(queryset=User.objects.all(), required=True, label='')
-    points = forms.IntegerField(required=True)
+    title = forms.CharField(required=True, label='', widget=forms.TextInput(attrs={'placeholder': 'Aufgabe', 'class': 'form-headline'}))
+    responsibility = forms.ModelChoiceField(queryset=User.objects.all(), required=True, label='', widget=forms.Select(attrs={'class': 'form-choicefield'}))
+    points = forms.IntegerField(required=True, label='', widget=forms.NumberInput(attrs={'placeholder': 'Punkte', 'class': 'form-number'}))
     isDone = forms.CheckboxInput()
     
     class Meta:
         model = Task
-        fields = ('title', 'responsibility', 'points', 'isDone')
+        fields = ('title', 'points', 'responsibility', 'isDone')
+
+
+class TaskCheckboxForm(forms.ModelForm):
+    isDone = forms.CheckboxInput()
+
+    class Meta:
+        model = Task
+        fields = ('isDone',)
     

@@ -1,0 +1,13 @@
+<table class="row" style="width: 100%">
+    <tr>
+        <td>
+            {{ checkbox }}
+        </td>
+        <td>
+            <a href="{{ task.get_absolute_url }}">
+                <p class="p-headline">{{ task.title }}</p>
+                <p>{{ task.responsibility }}</p>
+            </a>
+        </td>
+    </tr>
+</table>

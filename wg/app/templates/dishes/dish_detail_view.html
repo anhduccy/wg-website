@@ -12,13 +12,15 @@
             {% endblock content %}
         </div>
         
-        <div class="content" style="margin-top: 2em;">
+        <div class="content">
             <form method="post">
                 {% csrf_token %}
                 {{ dish_edit_form }}
-                <button type="submit" name="save" class="btn">Speichern</button>
+                <div class="navbar-detailview">
+                    <button type="submit" name="save" class="btn">Speichern</button>
                 <button type="submit" name="delete" class="btn-delete">Löschen</button>
                 <a href="{% url 'dishes' %}" class="btn-back">Zurück</a>
+                </div>
             </form>
         </div>
     </body>

@@ -1,15 +1,20 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.template import loader
 
 from app.models import Task
-from wg.forms import TaskForm
+from wg.forms import TaskForm, TaskCheckboxForm
 
 def list_view(request):
-    tasks = Task.objects.all()
+    #list_view
+    tasks = []
+    for task in Task.objects.all():
+        task_checkbox = TaskCheckboxForm(instance=task)
+        task_tuple = (task_checkbox, task)
+        tasks.append(task_tuple)
 
-    template = loader.get_template("tasks/task_view.html")
     context = {'tasks': tasks}
+    template = loader.get_template("tasks/task_view.html")
     return HttpResponse(template.render(request=request, context=context))
 
 
@@ -26,8 +31,8 @@ def detail_view(request, id_task=None):
             form.save()
         elif 'delete' in request.POST:
             task.delete()
-        return redirect('')
+        return redirect('tasks')
     
-    template = loader.get_template("task/task_detail_view.html")
-    context = {}
+    template = loader.get_template("tasks/task_detail_view.html")
+    context = {'task_edit_form': form}
     return HttpResponse(template.render(request=request, context=context))

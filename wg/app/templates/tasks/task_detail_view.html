@@ -2,8 +2,25 @@
 <!DOCTYPE html>
 <html>
     <head>
-
+        <link rel="stylesheet" href="{% static 'main.css' %}">
+        <link rel="stylesheet" href="{% static 'form.css' %}">
     </head>
 
-    <body></body>
+    <body>
+        <div class="header">
+            {% include 'sidebar.html' %}
+        </div>
+        <div class="content">
+            <form method="post">
+                {% csrf_token %}
+                {{ task_edit_form }}
+
+                <div class="navbar-detailview">
+                    <button type="submit" class="btn" name="save">Speichern</button>
+                    <button type="submit" class="btn-delete" name="delete">Löschen</button>
+                    <a href="{% url 'tasks' %}" class="btn-back">Zurück</a>
+                </div>
+            </form>
+        </div>
+    </body>
 </html>
