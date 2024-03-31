@@ -127,3 +127,11 @@ button {
     font-family: 'Avenir Next';
     font-weight: 500;
 }
+
+.circle {
+    display: flex;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #006400
+}

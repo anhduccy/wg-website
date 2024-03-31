@@ -9,5 +9,10 @@
                 <p>{{ form.instance.responsibility }}</p>
             </a>
         </td>
+        <td>
+            {% for i in form.instance.points|range %}
+                <td style="width:15px"><label class="circle"></label></td>
+            {% endfor %}
+        </td>
     </tr>
 </table>
