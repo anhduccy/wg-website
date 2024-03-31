@@ -68,7 +68,7 @@ class DishplanSettings(models.Model):
 class Task(models.Model):
     id_task = models.BigAutoField(primary_key = True)
     title = models.CharField(max_length=45)
-    #frequency
+    frequency = models.IntegerField()
     responsibility = models.ForeignKey("User", on_delete=models.CASCADE, db_column='responsibility')
     points = models.IntegerField()
     isDone = models.BooleanField(default=0)
@@ -79,8 +79,8 @@ class Task(models.Model):
 
     def get_absolute_url(self):
         return reverse('tasks-detail', args=[self.id_task])
-
-
+    
+    
 class TaskEvent(models.Model):
     id_taskEvent = models.BigAutoField(primary_key=True)
     date = models.DateField()

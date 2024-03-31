@@ -30,18 +30,24 @@ class DishplanSettingsForm(forms.ModelForm):
         item.dishType = self.cleaned_data['dishType']
         item.save()
 
+class CustomCheckboxInput(forms.CheckboxInput):
+    template_name = "checkbox.html"
+
+FREQUENCY_CHOICES = [(0, "Einmalig"), (7, "Wöchentlich"), (14, "Alle zwei Wochen"), (30, "Monatlich")]
+WEEKDAY_CHOICES = [(0, "Montag"), (1, "Dienstag"), (2, "Mittwoch"), (3, "Donnerstag"), (4, "Freitag"), (5, "Samstag"), (6, "Sonntag")]
+
 class TaskForm(forms.ModelForm):
     title = forms.CharField(required=True, label='', widget=forms.TextInput(attrs={'placeholder': 'Aufgabe', 'class': 'form-headline'}))
     responsibility = forms.ModelChoiceField(queryset=User.objects.all(), required=True, label='', widget=forms.Select(attrs={'class': 'form-choicefield'}))
     points = forms.IntegerField(required=True, label='', widget=forms.NumberInput(attrs={'placeholder': 'Punkte', 'class': 'form-number'}))
-    isDone = forms.BooleanField()
+    isDone = forms.BooleanField(required=False, label='', widget=CustomCheckboxInput())
+    frequency = forms.ChoiceField(choices=FREQUENCY_CHOICES, label='', widget=forms.Select(attrs={'class': 'form-choicefield'}))
+    weekday = forms.ChoiceField(choices=WEEKDAY_CHOICES, label='', widget=forms.Select(attrs={'class': 'form-choicefield'}))
     
     class Meta:
         model = Task
-        fields = ('title', 'points', 'responsibility', 'isDone')
+        fields = ('isDone', 'title', 'points', 'responsibility', 'frequency', 'weekday')
 
-class CustomCheckboxInput(forms.CheckboxInput):
-    template_name = "checkbox.html"
 
 class TaskCheckboxForm(forms.ModelForm):
     isDone = forms.BooleanField(required=False, label='', widget=CustomCheckboxInput(attrs={'onclick': 'this.form.submit();'}))
