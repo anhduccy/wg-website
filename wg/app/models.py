@@ -1,6 +1,7 @@
 from django.db import models
 from django import forms
 from django.urls import reverse
+import datetime
 
 # Create your models here.
 
@@ -69,6 +70,7 @@ class Task(models.Model):
     id_task = models.BigAutoField(primary_key = True)
     title = models.CharField(max_length=45)
     frequency = models.IntegerField()
+    startDate = models.DateField(default=datetime.date.today)
     responsibility = models.ForeignKey("User", on_delete=models.CASCADE, db_column='responsibility')
     points = models.IntegerField()
     isDone = models.BooleanField(default=0)

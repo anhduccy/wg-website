@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.template import loader
 from django.forms import modelformset_factory
 
-from app.models import Task
+from app.models import Task, TaskEvent
 from wg.forms import TaskForm, TaskCheckboxForm
 
 def list_view(request):
@@ -37,7 +37,8 @@ def detail_view(request, id_task=None):
     if request.method == "POST":
         form = TaskForm(request.POST, instance=task)
         if 'save' in request.POST:
-            form.save()
+            new_task = form.save()
+            #TaskEvent.objects.create(task=new_task)
         elif 'delete' in request.POST:
             task.delete()
         return redirect('tasks')
