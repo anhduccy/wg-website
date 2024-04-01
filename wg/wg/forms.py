@@ -25,7 +25,6 @@ class DishplanSettingsForm(forms.ModelForm):
         fields = ('dishType', )
     
     def save(self):
-        print(self)
         item = super(DishplanSettingsForm, self).save(commit=False)
         item.dishType = self.cleaned_data['dishType']
         item.save()
