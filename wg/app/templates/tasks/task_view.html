@@ -10,7 +10,7 @@
             {% include 'sidebar.html' %}
             {% endblock content %}
             <h1 style="text-transform: uppercase;">Alle Aufgaben</h1>
-            <h3><a href="{% url 'tasks-add' %}" class="btn">Aufgabe hinzufügen</a></h3>
+            <h3><a href="{% url 'tasks-add' %}" class="btn">Aufgabe hinzufügen</a> <a href="{% url 'tasks-add' %}" class="btn">Historie</a></h3>
         </div>
 
         <div class="content">
@@ -21,7 +21,9 @@
                             {% csrf_token %}
                             {{ formset.management_form }}
                             {% for form in formset %}
-                                <tr>{% include 'task_card.html' %}</tr>
+                                {% if form.instance.isDone == 0%}
+                                    <tr>{% include 'task_card.html' %}</tr>
+                                {% endif %}
                                 {% for hidden in form.hidden_fields %}
                                     {{ hidden }}
                                 {% endfor %}

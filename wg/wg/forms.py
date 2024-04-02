@@ -66,10 +66,11 @@ class TaskCheckboxForm(forms.ModelForm):
 
     def save(self, commit=True):
         task = super(TaskCheckboxForm, self).save(commit=False)
+        task_obj = Task.objects.get(pk=self.instance.id_task)
         task.isDone = self.cleaned_data['isDone']
-        task.save()
+        if task_obj.isDone != 1:
+            task.save()
         if task.isDone == True:
-            new_task = self.instance
             new_task = Task.objects.get(pk=self.instance.id_task)
             today = datetime.datetime.strptime(datetime.datetime.now().strftime('%Y-%m-%d'), '%Y-%m-%d')
             old_deadline = datetime.datetime.strptime(new_task.deadlineDate.strftime('%Y-%m-%d'), '%Y-%m-%d')

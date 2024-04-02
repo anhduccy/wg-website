@@ -15,9 +15,7 @@
                 {% csrf_token %}
                 <table>
                     {% for field in task_edit_form %}
-                        {% if field.html_name == 'isDone'%}
-                            <td style="width: 50px">{{field}}</td>
-                        {% elif field.html_name == 'title' %}
+                        {% if field.html_name == 'title' %}
                             <td>{{field}}</td>
                         {% endif %}
                     {% endfor %}

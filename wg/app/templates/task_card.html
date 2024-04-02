@@ -6,12 +6,12 @@
         <td>
             <a href="{{ form.instance.get_absolute_url }}">
                 <p class="p-headline">{{ form.instance.title }}</p>
-                <p>{{ form.instance.responsibility }}</p>
+                <p>{{ form.instance.deadlineDate|date:"d.m.Y" }} | {{ form.instance.responsibility }} </p>
             </a>
         </td>
         <td>
             {% for i in form.instance.points|range %}
-                <td style="width:15px"><label class="circle"></label></td>
+            <td style="width:15px"><label class="circle"></label></td>
             {% endfor %}
         </td>
     </tr>
