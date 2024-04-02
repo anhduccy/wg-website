@@ -13,7 +13,6 @@ def list_view(request):
     if request.method == "POST":
         formset = TaskFormSet(request.POST)
         if formset.is_valid():
-            instances = formset.save(commit=False)
             for form in formset:
                 form.save()
 

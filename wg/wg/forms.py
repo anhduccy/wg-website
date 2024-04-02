@@ -67,25 +67,44 @@ class TaskCheckboxForm(forms.ModelForm):
     def save(self, commit=True):
         task = super(TaskCheckboxForm, self).save(commit=False)
         task.isDone = self.cleaned_data['isDone']
-        new_task = self.instance
+        task.save()
+        if task.isDone == True:
+            new_task = self.instance
+            new_task = Task.objects.get(pk=self.instance.id_task)
+            today = datetime.datetime.strptime(datetime.datetime.now().strftime('%Y-%m-%d'), '%Y-%m-%d')
+            old_deadline = datetime.datetime.strptime(new_task.deadlineDate.strftime('%Y-%m-%d'), '%Y-%m-%d')
 
-        if new_task.frequency == 0:
-            return
-        elif new_task.frequency == 30:
-            print("")
-            #GET TODAY (ex. 4.12) (ex. 2.12)
-            #GET THE OLD DEADLINE DATE (ex. 25.11.) (ex. 1.12)
-            #GET THE DAY FROM IT (ex. 25) (ex. 1)
-
-            #IF OLD DEADLINE DATE IS IN THE LAST MONTH, GET THIS MONTH'S DATE (25.12.)
-            #ELSE GET THE NEXT MONTH'S DATE (1.1.)
-        else:
-            print("")
-            #GET TODAY (4.12)
-            #CHECK THE WEEKDAY OF THE OLD DEADLINE (30.11.)
-            #GET THE NEXT DATE FROM THE WEEKDAY FROM THE OLD DEADLINE (7.12.)
-
-        Task.objects.create(title=new_task.title, 
-                            frequency=new_task.frequency,
-                            responsibility = new_task.responsibility,
-                            points = new_task.points)
+            if new_task.frequency == 0: #EINMALIG
+                deadlineDate = None
+            elif new_task.frequency == 30: #MONATLICH
+                day = old_deadline.day
+                if old_deadline < today: #Wenn Deadline in der Vergangenheit
+                    if today.month == 12:
+                        month = 1
+                        year = today.year + 1
+                    else:
+                        month = today.month + 1
+                        year = today.year
+                    new_date = datetime.datetime(year=year, month=month, day=day)
+                else: #Wenn Deadline in der Zukunft
+                    if old_deadline.month == 12: 
+                        month = 1
+                        year = old_deadline.year + 1
+                    else:
+                        month = old_deadline.month + 1
+                        year = old_deadline.year
+                    new_date = datetime.datetime(year=year, month=month, day=day)
+            else: #WÖCHENTLICH BZW. ZWEIWÖCHENTLICH
+                freq = new_task.frequency
+                new_date = old_deadline + datetime.timedelta(days=freq)
+                if new_date < today:
+                    weekday_delta = old_deadline.weekday() - today.weekday()
+                    if weekday_delta < 0:
+                        weekday_delta += 7        
+                    new_date = today + datetime.timedelta(days=weekday_delta)
+                    
+            Task.objects.create(title=new_task.title, 
+                                frequency=new_task.frequency,
+                                responsibility = new_task.responsibility,
+                                deadlineDate = new_date,
+                                points = new_task.points)
