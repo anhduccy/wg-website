@@ -55,6 +55,12 @@ input[type=number]{
     background-color: white;
 }
 
+.form-datepicker {
+    color: #006400;
+    padding: 1em;
+}
+
+
 .navbar-detailview{
     position: fixed;
     bottom: 3em;

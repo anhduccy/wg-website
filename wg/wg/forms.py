@@ -3,7 +3,7 @@ from django.forms import widgets
 from django.utils.safestring import mark_safe
 from django.template import loader
 from app.models import *
-import datetime
+import datetime, operator
 
 class DishForm(forms.ModelForm):
     name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Gerichtname',
@@ -36,15 +36,15 @@ class CustomCheckboxInput(forms.CheckboxInput):
 FREQUENCY_CHOICES = [(0, "Einmalig"), (7, "Wöchentlich"), (14, "Alle zwei Wochen"), (30, "Monatlich")]
 
 class TaskForm(forms.ModelForm):
-    title = forms.CharField(required=True, label='', widget=forms.TextInput(attrs={'id': 'title', 'placeholder': 'Aufgabe', 'class': 'form-headline'}))
+    #title = forms.CharField(required=True, label='', widget=forms.TextInput(attrs={'id': 'title', 'placeholder': 'Aufgabe', 'class': 'form-headline'}))
     responsibility = forms.ModelChoiceField(queryset=User.objects.all(), required=True, label='Nächste Zuständigkeitsperson', widget=forms.Select(attrs={'id': 'responsibility','class': 'form-choicefield'}))
-    points = forms.IntegerField(required=True, label='Punkte', widget=forms.NumberInput(attrs={'id': 'points', 'placeholder': 'Punkte', 'class': 'form-number'}))
+    #points = forms.IntegerField(required=True, label='Punkte', widget=forms.NumberInput(attrs={'id': 'points', 'placeholder': 'Punkte', 'class': 'form-number'}))
     frequency = forms.ChoiceField(choices=FREQUENCY_CHOICES, label='Wiederholen', widget=forms.Select(attrs={'id': 'frequency', 'class': 'form-choicefield'}))
     deadlineDate = forms.DateField(label='Startdatum', widget=forms.DateInput(format=('%Y-%m-%d'), attrs={'id': 'startDate','type': 'date', 'value': datetime.date.today}))
     
     class Meta:
         model = Task
-        fields = ('title', 'points', 'responsibility', 'deadlineDate', 'frequency')
+        fields = ('responsibility', 'deadlineDate', 'frequency')
 
     def save(self, commit=True):
         task = super(TaskForm, self).save(commit=False)
@@ -63,46 +63,76 @@ class TaskCheckboxForm(forms.ModelForm):
     class Meta:
         model = Task
         fields = ('isDone',)
+    
+    def monthly(old_deadline, today):
+        day = old_deadline.day
+        if old_deadline < today: #Wenn Deadline in der Vergangenheit
+            if today.month == 12:
+                month = 1
+                year = today.year + 1
+            else:
+                month = today.month + 1
+                year = today.year
+            new_date = datetime.datetime(year=year, month=month, day=day)
+        else: #Wenn Deadline in der Zukunft
+            if old_deadline.month == 12: 
+                month = 1
+                year = old_deadline.year + 1
+            else:
+                month = old_deadline.month + 1
+                year = old_deadline.year
+            new_date = datetime.datetime(year=year, month=month, day=day)
+        return new_date
+    
+    def weekly(new_task, old_deadline, today):
+        freq = new_task.frequency
+        new_date = old_deadline + datetime.timedelta(days=freq)
+        if new_date < today:
+            weekday_delta = old_deadline.weekday() - today.weekday()
+            if weekday_delta < 0:
+                weekday_delta += 7        
+            new_date = today + datetime.timedelta(days=weekday_delta)
+        return new_date
+    
+    def getNextResponsibility():
+        leaderboard = []
+        for user in User.objects.all():
+            mock_user = [user, user.points]
+            try:
+                tasks = Task.objects.filter(isDone=0, responsibility=mock_user[0])
+            except:
+                print("ERROR forms.py: Die Person mit der ID: ", mock_user[0], "hat keine Aufgaben zugewiesen bekommen")
+            for upcoming_task in tasks:
+                mock_user[1] += upcoming_task.points
+            leaderboard.append(mock_user)
+        leaderboard_sorted = sorted(leaderboard, key=operator.itemgetter(1))
+        return leaderboard_sorted[0][0]
 
     def save(self, commit=True):
         task = super(TaskCheckboxForm, self).save(commit=False)
         task_obj = Task.objects.get(pk=self.instance.id_task)
         task.isDone = self.cleaned_data['isDone']
         if task_obj.isDone != 1:
+            task.lastChangeDate = datetime.datetime.now() #DATE AND TIMESTAMP
             task.save()
         if task.isDone == True:
+            #POINTS AWARD
+            resp = User.objects.get(pk=task.responsibility.id_user)
+            resp.points += task.points
+            resp.save()
+
             new_task = Task.objects.get(pk=self.instance.id_task)
             today = datetime.datetime.strptime(datetime.datetime.now().strftime('%Y-%m-%d'), '%Y-%m-%d')
             old_deadline = datetime.datetime.strptime(new_task.deadlineDate.strftime('%Y-%m-%d'), '%Y-%m-%d')
 
             if new_task.frequency == 0: #EINMALIG
-                deadlineDate = None
+                return
             elif new_task.frequency == 30: #MONATLICH
-                day = old_deadline.day
-                if old_deadline < today: #Wenn Deadline in der Vergangenheit
-                    if today.month == 12:
-                        month = 1
-                        year = today.year + 1
-                    else:
-                        month = today.month + 1
-                        year = today.year
-                    new_date = datetime.datetime(year=year, month=month, day=day)
-                else: #Wenn Deadline in der Zukunft
-                    if old_deadline.month == 12: 
-                        month = 1
-                        year = old_deadline.year + 1
-                    else:
-                        month = old_deadline.month + 1
-                        year = old_deadline.year
-                    new_date = datetime.datetime(year=year, month=month, day=day)
+                new_date = TaskCheckboxForm.monthly(old_deadline, today)
             else: #WÖCHENTLICH BZW. ZWEIWÖCHENTLICH
-                freq = new_task.frequency
-                new_date = old_deadline + datetime.timedelta(days=freq)
-                if new_date < today:
-                    weekday_delta = old_deadline.weekday() - today.weekday()
-                    if weekday_delta < 0:
-                        weekday_delta += 7        
-                    new_date = today + datetime.timedelta(days=weekday_delta)
+                new_date = TaskCheckboxForm.weekly(new_task, old_deadline, today)
+            
+            new_task.responsibility = TaskCheckboxForm.getNextResponsibility()
                     
             Task.objects.create(title=new_task.title, 
                                 frequency=new_task.frequency,
