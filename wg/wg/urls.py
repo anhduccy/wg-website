@@ -30,5 +30,6 @@ urlpatterns = [
 
     path('tasks/', task_view.list_view, name='tasks'),
     path('tasks/<id_task>', task_view.detail_view, name='tasks-detail'),
-    path('tasks/add/', task_view.detail_view, name = 'tasks-add')
+    path('tasks/add/', task_view.detail_view, name = 'tasks-add'),
+    path('tasks/history/', task_view.history_view, name='tasks-history')
 ]

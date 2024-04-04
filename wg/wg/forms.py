@@ -5,6 +5,7 @@ from django.template import loader
 from app.models import *
 import datetime, operator
 
+
 class DishForm(forms.ModelForm):
     name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Gerichtname',
                                                          'class': 'form-headline'}), required=True, label='')
@@ -33,27 +34,46 @@ class DishplanSettingsForm(forms.ModelForm):
 class CustomCheckboxInput(forms.CheckboxInput):
     template_name = "checkbox.html"
 
-FREQUENCY_CHOICES = [(0, "Einmalig"), (7, "Wöchentlich"), (14, "Alle zwei Wochen"), (30, "Monatlich")]
 
-class TaskForm(forms.ModelForm):
+FREQUENCY_CHOICES = [(0, "Einmalig"), (7, "Wöchentlich"), (14, "Alle zwei Wochen"), (30, "Monatlich")]
+class TaskAddForm(forms.ModelForm):
     title = forms.CharField(required=True, label='', widget=forms.TextInput(attrs={'id': 'title', 'placeholder': 'Aufgabe', 'class': 'form-headline'}))
     responsibility = forms.ModelChoiceField(queryset=User.objects.all(), required=True, label='Nächste Zuständigkeitsperson', widget=forms.Select(attrs={'id': 'responsibility','class': 'form-choicefield'}))
     points = forms.IntegerField(required=True, label='Punkte', widget=forms.NumberInput(attrs={'id': 'points', 'placeholder': 'Punkte', 'class': 'form-number'}))
     frequency = forms.ChoiceField(choices=FREQUENCY_CHOICES, label='Wiederholen', widget=forms.Select(attrs={'id': 'frequency', 'class': 'form-choicefield'}))
-    deadlineDate = forms.DateField(label='Startdatum', widget=forms.DateInput(format=('%Y-%m-%d'), attrs={'id': 'startDate','type': 'date', 'value': datetime.date.today}))
+    deadlineDate = forms.DateField(label='Startdatum', widget=forms.DateInput(format=('%Y-%m-%d'), attrs={'id': 'deadlineDate','type': 'date', 'value': datetime.date.today}))
     
     class Meta:
         model = Task
         fields = ('title', 'points', 'responsibility', 'deadlineDate', 'frequency')
+    
+    def save(self, commit=True):
+        task = super(TaskAddForm, self).save(commit=False)
+        task.title = self.cleaned_data['title']
+        task.points = self.cleaned_data['points']
+        task.responsibility = self.cleaned_data['responsibility']
+        task.deadlineDate = self.cleaned_data['deadlineDate']
+        task.frequency = self.cleaned_data['frequency']
+        task.creationDate = datetime.datetime.now()
+        task.lastChangeDate = datetime.datetime.now()
+        task.save()
+
+
+class TaskEditForm(forms.ModelForm):
+    responsibility = forms.ModelChoiceField(queryset=User.objects.all(), required=True, label='Nächste Zuständigkeitsperson', widget=forms.Select(attrs={'id': 'responsibility','class': 'form-choicefield'}))
+    frequency = forms.ChoiceField(choices=FREQUENCY_CHOICES, label='Wiederholen', widget=forms.Select(attrs={'id': 'frequency', 'class': 'form-choicefield'}))
+    deadlineDate = forms.DateField(label='Startdatum', widget=forms.DateInput(format=('%Y-%m-%d'), attrs={'id': 'deadlineDate','type': 'date', 'value': datetime.date.today}))
+
+    class Meta:
+        model = Task
+        fields = ('responsibility', 'deadlineDate', 'frequency')
 
     def save(self, commit=True):
-        task = super(TaskForm, self).save(commit=False)
-        task.title = self.cleaned_data['title']
+        task = super(TaskEditForm, self).save(commit=False)
         task.responsibility = self.cleaned_data['responsibility']
-        task.points = self.cleaned_data['points']
-        task.frequency = self.cleaned_data['frequency']
         task.deadlineDate = self.cleaned_data['deadlineDate']
-        task.lastChangeDate = datetime.datetime.now().strftime('%Y-%m-%d')
+        task.frequency = self.cleaned_data['frequency']
+        task.lastChangeDate = datetime.datetime.now()
         task.save()
 
 
@@ -112,10 +132,11 @@ class TaskCheckboxForm(forms.ModelForm):
         task = super(TaskCheckboxForm, self).save(commit=False)
         task_obj = Task.objects.get(pk=self.instance.id_task)
         task.isDone = self.cleaned_data['isDone']
-        if task_obj.isDone != 1:
+
+        if task_obj.isDone != 1 and task.isDone == True:
             task.lastChangeDate = datetime.datetime.now() #DATE AND TIMESTAMP
             task.save()
-        if task.isDone == True:
+
             #POINTS AWARD
             resp = User.objects.get(pk=task.responsibility.id_user)
             resp.points += task.points

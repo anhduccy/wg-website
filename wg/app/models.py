@@ -3,7 +3,6 @@ from django import forms
 from django.urls import reverse
 import datetime
 
-# Create your models here.
 
 class User(models.Model):
     id_user = models.BigAutoField(primary_key = True)
@@ -18,6 +17,7 @@ class User(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class DishType(models.Model):
     id_dishType = models.BigAutoField(primary_key = True)
@@ -57,6 +57,7 @@ class Dishplan(models.Model):
         managed = True
         db_table = 'Dishplan'
 
+
 class DishplanSettings(models.Model):
     id_dishplanSettings = models.BigAutoField(primary_key=True)
     weekday = models.CharField(max_length=10)
@@ -71,8 +72,8 @@ class Task(models.Model):
     id_task = models.BigAutoField(primary_key = True)
     title = models.CharField(max_length=45)
     frequency = models.IntegerField()
-    creationDate = models.DateField(default=datetime.date.today)
-    lastChangeDate = models.DateField(default=datetime.date.today)
+    creationDate = models.DateTimeField(default=datetime.datetime.today)
+    lastChangeDate = models.DateTimeField(default=datetime.datetime.today)
     deadlineDate = models.DateField(default=datetime.date.today)
     responsibility = models.ForeignKey("User", on_delete=models.CASCADE, db_column='responsibility')
     points = models.IntegerField()

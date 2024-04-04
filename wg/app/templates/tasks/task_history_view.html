@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="{% static 'main.css' %}">
+    </head>
+    <body>
+        <div class="header">
+            {% include 'sidebar.html' %}
+            <h1 style="text-transform: uppercase;">Aufgabenhistorie</h1>
+            <h3><a href="{% url 'tasks-add' %}" class="btn">Aufgabe hinzufügen</a> <a href="{% url 'tasks' %}" class="btn">Anstehende Aufgaben</a></h3>
+        </div>
+
+        <div class="content">
+            <table style="width:100%; text-align: center;" class="list">
+                    <tr style="color: #006400;">
+                        <th>Aufgaben</th>
+                        <th>Punkte</th>
+                        <th>Veranwortlich</th>
+                        <th>Fälligkeitsdatum</th>
+                        <th>Letzte Änderung</th>
+                    </tr>
+                {% for task in tasks %}
+                    <tr style="color: #454545">
+                        <td><p>{{ task.title }}</p></td>
+                        <td><p>{{ task.points }} Punkte</p></td>
+                        <td><p>{{ task.responsibility }}</p></td>
+                        <td><p>{{ task.deadlineDate|date:"j. F Y"  }}</p></td>
+                        <td><p>{{ task.lastChangeDate }}</p></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </body>
+</html>
