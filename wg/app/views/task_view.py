@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.template import loader
 from django.forms import modelformset_factory
 
-from app.models import Task
+from app.models import Task, User
 from wg.forms import TaskForm, TaskCheckboxForm
 
 def list_view(request):    
@@ -26,10 +26,11 @@ def list_view(request):
 def detail_view(request, id_task=None):
     if id_task is not None:
         task = Task.objects.get(pk=id_task)
+        form = TaskForm(instance=task)
     else:
-        task = None
+        form = TaskForm(initial={'responsibility': TaskCheckboxForm.getNextResponsibility().id_user}, instance=None)
 
-    form = TaskForm(instance=task)
+
     if request.method == "POST":
         form = TaskForm(request.POST, instance=task)
         if 'save' in request.POST:

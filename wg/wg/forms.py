@@ -36,15 +36,15 @@ class CustomCheckboxInput(forms.CheckboxInput):
 FREQUENCY_CHOICES = [(0, "Einmalig"), (7, "Wöchentlich"), (14, "Alle zwei Wochen"), (30, "Monatlich")]
 
 class TaskForm(forms.ModelForm):
-    #title = forms.CharField(required=True, label='', widget=forms.TextInput(attrs={'id': 'title', 'placeholder': 'Aufgabe', 'class': 'form-headline'}))
+    title = forms.CharField(required=True, label='', widget=forms.TextInput(attrs={'id': 'title', 'placeholder': 'Aufgabe', 'class': 'form-headline'}))
     responsibility = forms.ModelChoiceField(queryset=User.objects.all(), required=True, label='Nächste Zuständigkeitsperson', widget=forms.Select(attrs={'id': 'responsibility','class': 'form-choicefield'}))
-    #points = forms.IntegerField(required=True, label='Punkte', widget=forms.NumberInput(attrs={'id': 'points', 'placeholder': 'Punkte', 'class': 'form-number'}))
+    points = forms.IntegerField(required=True, label='Punkte', widget=forms.NumberInput(attrs={'id': 'points', 'placeholder': 'Punkte', 'class': 'form-number'}))
     frequency = forms.ChoiceField(choices=FREQUENCY_CHOICES, label='Wiederholen', widget=forms.Select(attrs={'id': 'frequency', 'class': 'form-choicefield'}))
     deadlineDate = forms.DateField(label='Startdatum', widget=forms.DateInput(format=('%Y-%m-%d'), attrs={'id': 'startDate','type': 'date', 'value': datetime.date.today}))
     
     class Meta:
         model = Task
-        fields = ('responsibility', 'deadlineDate', 'frequency')
+        fields = ('title', 'points', 'responsibility', 'deadlineDate', 'frequency')
 
     def save(self, commit=True):
         task = super(TaskForm, self).save(commit=False)

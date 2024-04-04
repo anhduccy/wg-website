@@ -21,7 +21,7 @@
                             {% csrf_token %}
                             {{ formset.management_form }}
                             {% for form in formset %}
-                                {% if form.instance.isDone == 0%}
+                                {% if form.instance.isDone == 0 %}
                                     <tr>{% include 'task_card.html' %}</tr>
                                 {% endif %}
                                 {% for hidden in form.hidden_fields %}
