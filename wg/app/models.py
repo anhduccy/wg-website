@@ -89,8 +89,8 @@ class Task(models.Model):
 
 class Transaction(models.Model):
     id_transaction = models.BigAutoField(primary_key=True)
-    title = models.CharField(max_length=45, required=True)
-    sum = models.IntegerField(required=True)
+    title = models.CharField(max_length=45)
+    sum = models.IntegerField()
     isActive = models.BooleanField()
 
     class Meta:
@@ -99,7 +99,7 @@ class Transaction(models.Model):
 
 
 class Bill(models.Model):
-    id_bill = models.CharField(primary_key=True)
+    id_bill = models.CharField(primary_key=True, max_length=45)
     creationDate = models.DateTimeField(default=datetime.datetime.today)
     deadlineDate = models.DateField(default=datetime.date.today)
 

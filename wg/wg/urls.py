@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from app.views import user_view, dish_view, dishplan_view, task_view
+from app.views import user_view, dish_view, dishplan_view, task_view, transaction_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,5 +31,7 @@ urlpatterns = [
     path('tasks/', task_view.list_view, name='tasks'),
     path('tasks/<id_task>', task_view.detail_view, name='tasks-detail'),
     path('tasks/add/', task_view.detail_view, name = 'tasks-add'),
-    path('tasks/history/', task_view.history_view, name='tasks-history')
+    path('tasks/history/', task_view.history_view, name='tasks-history'),
+
+    path('transactions/', transaction_view.list_view, name='transactions')
 ]

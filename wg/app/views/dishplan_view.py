@@ -46,7 +46,7 @@ def view(request):
         dishplan[i] = (weekday_of_dishType.weekday, date_next, dishType, dish) #For HTML rendering
         
     #Configuring the site
-    template = loader.get_template("dishplan.html")
+    template = loader.get_template("dishes/dishplan.html")
     context = {'dishplan': dishplan, 'dishplan_settings': dishplan_settings}
 
     return HttpResponse(template.render(request=request, context=context))

@@ -160,3 +160,14 @@ class TaskCheckboxForm(forms.ModelForm):
                                 responsibility = new_task.responsibility,
                                 deadlineDate = new_date,
                                 points = new_task.points)
+            
+
+class TransactionForm(forms.ModelForm):
+    title = forms.CharField(widget=forms.TextInput())
+    amount = forms.IntegerField(widget=forms.NumberInput())
+    isActive = forms.BooleanField(widget = CustomCheckboxInput())
+
+    class Meta:
+        model = Transaction
+        fields = ('title', 'amount', 'isActive')
+
