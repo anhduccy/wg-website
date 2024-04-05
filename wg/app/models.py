@@ -86,3 +86,33 @@ class Task(models.Model):
     def get_absolute_url(self):
         return reverse('tasks-detail', args=[self.id_task])
 
+
+class Transaction(models.Model):
+    id_transaction = models.BigAutoField(primary_key=True)
+    title = models.CharField(max_length=45, required=True)
+    sum = models.IntegerField(required=True)
+    isActive = models.BooleanField()
+
+    class Meta:
+        managed = True
+        db_table = 'Transaction'
+
+
+class Bill(models.Model):
+    id_bill = models.CharField(primary_key=True)
+    creationDate = models.DateTimeField(default=datetime.datetime.today)
+    deadlineDate = models.DateField(default=datetime.date.today)
+
+    class Meta:
+        managed=True
+        db_table= 'Bill'
+
+
+class TransactionBillEntry(models.Model):
+    id_transactionBillEntry = models.BigAutoField(primary_key=True)
+    bill = models.ForeignKey("Bill", on_delete=models.CASCADE, db_column='bill')
+    transaction = models.ForeignKey("Transaction", on_delete=models.CASCADE, db_column='transaction')
+
+    class Meta:
+        managed=True
+        db_table = 'TransactionBillEntry'
