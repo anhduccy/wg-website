@@ -3,9 +3,29 @@
 <!DOCTYPE html>
 <html>
     <head>
-
+        <link rel="stylesheet" href="{% static 'main.css'%}">
     </head>
     <body>
+        <div class="header">
+            {% include 'sidebar.html' %}
+            <h1 style="text-transform: uppercase;">Transaktionen</h1>
+        </div>
 
+        <div class="content">
+            <table class="list" style="width: 100%;">
+                <tr>
+                    <th>Titel</th>
+                    <th>Betrag</th>
+                    <th>Ist Aktiv</th>
+                </tr>
+                {% for form in formset %}
+                <tr>
+                    <td>{{ form.title }}</td>
+                    <td>{{ form.amount }}</td>
+                    <td>{{ form.isActive }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
     </body>
 </html>
