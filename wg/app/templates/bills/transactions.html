@@ -4,6 +4,7 @@
 <html>
     <head>
         <link rel="stylesheet" href="{% static 'main.css'%}">
+        <link rel="stylesheet" href="{% static 'table.css'%}">
     </head>
     <body>
         <div class="header">
@@ -12,20 +13,31 @@
         </div>
 
         <div class="content">
-            <table class="list" style="width: 100%;">
-                <tr>
-                    <th>Titel</th>
-                    <th>Betrag</th>
-                    <th>Ist Aktiv</th>
-                </tr>
-                {% for form in formset %}
-                <tr>
-                    <td>{{ form.title }}</td>
-                    <td>{{ form.amount }}</td>
-                    <td>{{ form.isActive }}</td>
-                </tr>
-                {% endfor %}
-            </table>
+                <table style="width: 100%;">
+
+                    <tr>
+                        <th>Titel</th>
+                        <th>Betrag</th>
+                    </tr>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{formset.management_form }}
+                        {% for form in formset %}
+                            <tr>
+                                <td style="width: 60%">{{ form.title }}</td>
+                                <td style="width: 20%">{{ form.sum }}</td>
+                                <!--<td>{% divide form.sum 3 %}</td>-->
+                                <td>
+                                    <button type="submit" name="save" class="table-btn">Speichern</button>
+                                    <button type="submit" name="delete" class="table-btn delete">Löschen</button>
+                                </td>
+                            </tr>
+                            {% for hidden in form.hidden_fields %}
+                                    {{ hidden }}
+                            {% endfor %}
+                        {% endfor %}
+                    </form>
+                </table>
         </div>
     </body>
 </html>

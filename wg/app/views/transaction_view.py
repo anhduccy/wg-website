@@ -7,16 +7,17 @@ from app.models import Transaction, TransactionBillEntry, Bill
 from wg.forms import TransactionForm
 
 def list_view(request):
-    transactions = Transaction.objects.all()
-
-    TransactionFormSet = modelformset_factory(model=Transaction, form=TransactionForm)
+    TransactionFormSet = modelformset_factory(model=Transaction, form=TransactionForm, fields = ('title', 'sum'))
     formset = TransactionFormSet()
 
     if request.method == "POST":
         formset = TransactionFormSet(request.POST)
+        print(request.POST, " ", formset.is_valid())
         if formset.is_valid():
             for form in formset:
-                form.save()
+                try: form.save() 
+                except: pass
+
     formset = TransactionFormSet()
 
     context = {'formset': formset}

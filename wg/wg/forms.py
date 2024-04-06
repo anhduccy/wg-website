@@ -163,11 +163,10 @@ class TaskCheckboxForm(forms.ModelForm):
             
 
 class TransactionForm(forms.ModelForm):
-    title = forms.CharField(widget=forms.TextInput())
-    amount = forms.IntegerField(widget=forms.NumberInput())
-    isActive = forms.BooleanField(widget = CustomCheckboxInput())
+    title = forms.CharField(widget=forms.TextInput(attrs={'class': 'cell'}))
+    sum = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'cell'}))
 
     class Meta:
         model = Transaction
-        fields = ('title', 'amount', 'isActive')
+        fields = ('title', 'sum')
 

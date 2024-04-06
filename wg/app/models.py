@@ -91,7 +91,7 @@ class Transaction(models.Model):
     id_transaction = models.BigAutoField(primary_key=True)
     title = models.CharField(max_length=45)
     sum = models.IntegerField()
-    isActive = models.BooleanField()
+    isActive = models.BooleanField(default = 1)
 
     class Meta:
         managed = True
