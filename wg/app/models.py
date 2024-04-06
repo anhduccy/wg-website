@@ -90,7 +90,7 @@ class Task(models.Model):
 class Transaction(models.Model):
     id_transaction = models.BigAutoField(primary_key=True)
     title = models.CharField(max_length=45)
-    sum = models.IntegerField()
+    sum = models.DecimalField(decimal_places=2, max_digits=6)
     isActive = models.BooleanField(default = 1)
 
     class Meta:

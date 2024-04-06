@@ -12,10 +12,13 @@ def list_view(request):
 
     if request.method == "POST":
         formset = TransactionFormSet(request.POST)
-        print(request.POST, " ", formset.is_valid())
         if formset.is_valid():
             for form in formset:
-                try: form.save() 
+                try:
+                    if 'save' in request.POST:
+                        form.save() 
+                    elif 'delete' in request.POST:
+                        form.delete(request.POST)
                 except: pass
 
     formset = TransactionFormSet()

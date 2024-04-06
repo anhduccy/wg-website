@@ -164,9 +164,25 @@ class TaskCheckboxForm(forms.ModelForm):
 
 class TransactionForm(forms.ModelForm):
     title = forms.CharField(widget=forms.TextInput(attrs={'class': 'cell'}))
-    sum = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'cell'}))
+    sum = forms.DecimalField(widget=forms.NumberInput(attrs={'class': 'cell'}))
 
     class Meta:
         model = Transaction
         fields = ('title', 'sum')
+
+    def save(self, commit=True):
+        transaction = super(TransactionForm, self).save(commit=False)
+        transactionObj = Transaction.objects.get(pk=transaction.id_transaction)
+        if transactionObj.title == transaction.title and float(transactionObj.sum) == float(transaction.sum):
+            pass
+        else:
+            transactionObj.isActive = 0
+            transactionObj.save()
+            Transaction.objects.create(title=transaction.title, sum=transaction.sum)
+
+    def delete(self, request):
+        try: obj = Transaction.objects.get(pk=request.get('delete'))
+        except: print("ERROR")
+        obj.isActive = 0
+        obj.save()
 
