@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="{% static 'main.css' %}">
+        <link rel="stylesheet" href="{% static 'form.css' %}">
+        <link rel="stylesheet" href="{% static 'table.css' %}">
+    </head>
+    <body>
+        <div class="header">
+            {% include 'sidebar.html' %}
+            <h1 style="text-transform: uppercase;">Rechnungen</h1>
+            <h3><a href="{% url 'transactions' %}" class="btn">Transaktionen</a></h3>
+        </div>
+        <div class="content">
+            <div class="list" style="width:100%">
+                {% for bill in bills %}
+                    <table class="row" style="width: 100%;">
+                        <td style="width: 2em;"><a href="" class="table-btn">Anschauen</a></td>
+                        <td class="p-headline" style="text-indent: 1.5em;">Rechnung vom {{ bill.creationDate }}</td>
+                        <td style="text-align: right;">{{ bill.deadlineDate }}</td>
+                    </table>
+                {% endfor %}
+            </div>
+        </div>
+    </body>
+</html>

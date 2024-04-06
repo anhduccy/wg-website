@@ -99,7 +99,7 @@ class Transaction(models.Model):
 
 
 class Bill(models.Model):
-    id_bill = models.CharField(primary_key=True, max_length=45)
+    id_bill = models.BigAutoField(primary_key=True)
     creationDate = models.DateTimeField(default=datetime.datetime.today)
     deadlineDate = models.DateField(default=datetime.date.today)
 
