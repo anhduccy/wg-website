@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style type="text/css">
+            @page {
+                margin: 2cm;
+                @frame {
+                    -pdf-frame-content: footerContent;
+                    height: 0;
+                    bottom: 2cm;
+                    margin-left: 2cm;
+                    margin-right: 2cm;
+                }
+            }
+            body{
+                font-size: 11px;
+            }
+        </style>
+    </head>
+    <body>
+        <p>{{user_info.wg_name}}<br><br>{{user_info.wg_resident_1}}<br>{{user_info.wg_resident_2}}<br>{{user_info.wg_resident_3}}</p>
+        <p>{{user_info.street}}<br>{{user_info.plz}} {{user_info.city}}</p>
+
+        <p style="margin-top: 100px; text-align: right;">{{ user_info.city }}, der {{bill.creationDate|date:"d.m.Y"}}</p>
+
+        <h1>Zusammensetzung des Monatsbudgets für {{ bill.deadlineDate|date:"F Y" }}</h1>
+        <table style="border: solid black 0.5px; padding: 4px 3px 0px 3px;">
+            <tr>
+                <th style="text-align: left;">Verwendungszweck</th>
+                <th style="text-align: right;">Gesamtkosten der WG</th>
+                <th style="text-align: right;">Kosten pro Person</th>
+            </tr>
+            {% for transaction in transactions %}
+            <tr>
+                <td style="text-align: left;">{{ transaction.0.title }}</td>
+                <td style="text-align: right;">{{ transaction.0.sum | floatformat:"2g" }}€</td>
+                <td style="text-align: right;">{{ transaction.1 | floatformat:"2g" }}€</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <th style="text-align: left;">Gesamt</th>
+                <td style="text-align: right;">{{sumWG | floatformat:"2g"}}€</td>
+                <th style="text-align: right;">{{sum | floatformat:"2g"}}€</th>
+            </tr>
+        </table>
+
+        <p>Die Gemeinschaftskasse dient zur außerplanmäßigen Einkäufen (z.B. WG-Möbel etc.)
+        und zur Sicherung gemeinschaftlicher finanzieller Notlagen wie z.B. Abrechnungen,
+        Nachzahlungen o.Ä.</p>
+        <p>Eine Auszahlung aus der Gemeinschaftskasse erfolgt, wenn es nach dem Erachten aller
+        WG-Teilnehmer einstimmig angemessen ist.</p>
+        <p>Bitte den folgenden Betrag von <b>{{sum | floatformat:"2g"}}€</b>&nbsp; bis zum <b>{{bill.deadlineDate|date:"d.m.Y"}}</b> auf das folgende Konto überweisen:</p>
+
+        <table>
+            <tr>
+                <th style="width: 20%; text-align: left;">Kontoinhaber</th>
+                <td><p>{{ user_info.account_holder }}</p></td>
+            </tr>
+            <tr>
+                <th style="width: 20%; text-align: left;">IBAN</th>
+                <td><p>{{ user_info.iban }}</p></td>
+            </tr>
+            <tr>
+                <th style="width: 20%; text-align: left;">Verwendungszweck</th>
+                <td><p>Monatsbudget {{bill.deadlineDate|date:"m/Y"}} Name</p></td>
+            </tr>
+            <tr>
+                <th style="width: 20%; text-align: left;">Betrag</th>
+                <td><p>{{ sum | floatformat:"2g" }}€</p></td>
+            </tr>
+        </table>
+
+        <p><br><br>Mit freundlichen Grüßen<br>Alle Bewohner der {{user_info.wg_name}}</p>
+        <div id="footerContent">
+            <table style="font-size: 9px;">
+                <tr>
+                    <td>
+                        <p>{{bill.deadlineDate|date:"m/Y"}}</p>
+                    </td>
+                    <td>
+                        <p style="text-align: center;">Rechnungs-Nr.: {{bill.deadlineDate|date:"mY"}}</p>
+                    </td>
+                    <td>
+                        <p style="text-align: right;">Seite 1 von 1</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>

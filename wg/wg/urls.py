@@ -34,5 +34,6 @@ urlpatterns = [
     path('tasks/history/', task_view.history_view, name='tasks-history'),
 
     path('bills/', bill_view.list_view, name='bills'),
-    path('transactions/', transaction_view.list_view, name='transactions')
+    path('bills/pdf/<id_bill>', bill_view.pdf_view, name='bills-detail'),
+    path('transactions/', transaction_view.list_view, name='transactions'),
 ]

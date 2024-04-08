@@ -106,7 +106,10 @@ class Bill(models.Model):
     class Meta:
         managed=True
         db_table= 'Bill'
-
+            
+    def get_absolute_url(self):
+        return reverse('bills-detail', args=[self.id_bill])
+    
 
 class TransactionBillEntry(models.Model):
     id_transactionBillEntry = models.BigAutoField(primary_key=True)

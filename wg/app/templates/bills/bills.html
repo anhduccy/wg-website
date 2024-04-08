@@ -10,15 +10,25 @@
         <div class="header">
             {% include 'sidebar.html' %}
             <h1 style="text-transform: uppercase;">Rechnungen</h1>
-            <h3><a href="{% url 'transactions' %}" class="btn">Transaktionen</a></h3>
+            <table>
+                <tr>
+                    <td><a href="{% url 'transactions' %}" class="btn">Transaktionen</a></td>
+                    <td>
+                        <form method="post">
+                            {%csrf_token%}
+                            <button type="submit" class="btn">Neue Rechnung erstellen</button>
+                        </form>
+                    </td>
+                </tr>
+            </table>
         </div>
         <div class="content">
             <div class="list" style="width:100%">
                 {% for bill in bills %}
                     <table class="row" style="width: 100%;">
-                        <td style="width: 2em;"><a href="" class="table-btn">Anschauen</a></td>
-                        <td class="p-headline" style="text-indent: 1.5em;">Rechnung vom {{ bill.creationDate }}</td>
-                        <td style="text-align: right;">{{ bill.deadlineDate }}</td>
+                        <td style="width: 2em;"><a href="{{bill.get_absolute_url}}" class="table-btn">Anschauen</a></td>
+                        <td class="p-headline" style="text-indent: 1.5em;">Rechnung vom {{ bill.creationDate|date:"d. F Y" }}</td>
+                        <td style="text-align: right;">{{ bill.deadlineDate|date:"d. F Y" }}</td>
                     </table>
                 {% endfor %}
             </div>
