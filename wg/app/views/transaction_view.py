@@ -8,10 +8,10 @@ from wg.forms import TransactionForm
 
 def list_view(request):
     TransactionFormSet = modelformset_factory(model=Transaction, form=TransactionForm, fields = ('title', 'sum'))
-    formset = TransactionFormSet()
+    formset = TransactionFormSet(queryset=Transaction.objects.filter(isActive=1))
 
     if request.method == "POST":
-        formset = TransactionFormSet(request.POST)
+        formset = TransactionFormSet(request.POST, queryset=Transaction.objects.filter(isActive=1))
         if formset.is_valid():
             for form in formset:
                 try:
@@ -21,7 +21,7 @@ def list_view(request):
                         form.delete(request.POST)
                 except: pass
 
-    formset = TransactionFormSet()
+    formset = TransactionFormSet(queryset=Transaction.objects.filter(isActive=1))
 
     context = {'formset': formset}
     template = loader.get_template("bills/transactions.html")

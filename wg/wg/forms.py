@@ -160,11 +160,13 @@ class TaskCheckboxForm(forms.ModelForm):
                                 responsibility = new_task.responsibility,
                                 deadlineDate = new_date,
                                 points = new_task.points)
-            
+
+class CurrencyInput(forms.NumberInput):
+    template_name = "currency.html"
 
 class TransactionForm(forms.ModelForm):
     title = forms.CharField(widget=forms.TextInput(attrs={'class': 'cell'}))
-    sum = forms.DecimalField(widget=forms.NumberInput(attrs={'class': 'cell'}))
+    sum = forms.DecimalField(widget=CurrencyInput(attrs={'class': 'cell'}))
 
     class Meta:
         model = Transaction
@@ -172,17 +174,23 @@ class TransactionForm(forms.ModelForm):
 
     def save(self, commit=True):
         transaction = super(TransactionForm, self).save(commit=False)
-        transactionObj = Transaction.objects.get(pk=transaction.id_transaction)
-        if transactionObj.title == transaction.title and float(transactionObj.sum) == float(transaction.sum):
-            pass
-        else:
-            transactionObj.isActive = 0
-            transactionObj.save()
-            Transaction.objects.create(title=transaction.title, sum=transaction.sum)
+        try: 
+            transactionObj = Transaction.objects.get(pk=transaction.id_transaction)
+            if transactionObj.title == transaction.title and float(transactionObj.sum) == float(transaction.sum):
+                pass
+            else:
+                transactionObj.isActive = 0
+                transactionObj.save()
+                Transaction.objects.create(title=transaction.title, sum=transaction.sum)
+        except:
+            transaction.title = self.cleaned_data["title"]
+            transaction.sum = self.cleaned_data["sum"]
+            transaction.save()
+
 
     def delete(self, request):
         try: obj = Transaction.objects.get(pk=request.get('delete'))
-        except: print("ERROR")
+        except: print("TransactionFormError: Couldn't delete the transactions.")
         obj.isActive = 0
         obj.save()
 
