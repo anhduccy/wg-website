@@ -71,7 +71,7 @@ a:hover {
 
 .btn-back {
     margin-left: 1em;
-    color: gray !important;
+    color: #767676 !important;
     font-size: medium;
     text-decoration: none;
     background: none;
@@ -84,7 +84,7 @@ a:hover {
 
 .btn-delete {
     background-color: #F3F2ED;
-    color: red;
+    color: #ff0000;
     border: none;
     font-size: medium;
     font-weight: 500;

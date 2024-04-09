@@ -7,12 +7,12 @@ import datetime, operator
 
 
 class DishForm(forms.ModelForm):
-    name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Gerichtname',
+    name = forms.CharField(widget=forms.TextInput(attrs={'id': 'name', 'placeholder': 'Gerichtname',
                                                          'class': 'form-headline'}), required=True, label='')
-    dishType = forms.ModelChoiceField(queryset=DishType.objects.all(), required=True, label='', widget=forms.Select(attrs={'class': 'form-choicefield'}))
-    chef = forms.ModelChoiceField(queryset=User.objects.all(), required=False, label='', widget=forms.Select(attrs={'class': 'form-choicefield'}))
-    proximityDuration = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder': 'min.', 'class': 'form-number'}), label='', max_value=999, required=True, label_suffix='Minuten')
-    description = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Zubereitungsbeschreibung', 'class': 'form-textfield'},), label='', required=False)
+    dishType = forms.ModelChoiceField(queryset=DishType.objects.all(), required=True, label='Gerichtsart', widget=forms.Select(attrs={'id': 'dishType', 'class': 'form-choicefield'}), empty_label=None)
+    chef = forms.ModelChoiceField(queryset=User.objects.all(), required=False, label='Chefkoch', widget=forms.Select(attrs={'id': 'chef', 'class': 'form-choicefield'}), empty_label=None)
+    proximityDuration = forms.IntegerField(widget=forms.NumberInput(attrs={'id': 'proximityDuration', 'placeholder': 'Dauer', 'class': 'form-number'}), label='', max_value=999, required=True, label_suffix='Minuten')
+    description = forms.CharField(widget=forms.Textarea(attrs={'id': 'description', 'placeholder': 'Zubereitungsbeschreibung', 'class': 'form-textfield'},), label='', required=False)
 
     class Meta:
         model = Dish
@@ -38,7 +38,7 @@ class CustomCheckboxInput(forms.CheckboxInput):
 FREQUENCY_CHOICES = [(0, "Einmalig"), (7, "Wöchentlich"), (14, "Alle zwei Wochen"), (30, "Monatlich")]
 class TaskAddForm(forms.ModelForm):
     title = forms.CharField(required=True, label='', widget=forms.TextInput(attrs={'id': 'title', 'placeholder': 'Aufgabe', 'class': 'form-headline'}))
-    responsibility = forms.ModelChoiceField(queryset=User.objects.all(), required=True, label='Nächste Zuständigkeitsperson', widget=forms.Select(attrs={'id': 'responsibility','class': 'form-choicefield'}))
+    responsibility = forms.ModelChoiceField(queryset=User.objects.all(), required=True, label='Nächste Zuständigkeitsperson', widget=forms.Select(attrs={'id': 'responsibility','class': 'form-choicefield'}), empty_label=None)
     points = forms.IntegerField(required=True, label='Punkte', widget=forms.NumberInput(attrs={'id': 'points', 'placeholder': 'Punkte', 'class': 'form-number'}))
     frequency = forms.ChoiceField(choices=FREQUENCY_CHOICES, label='Wiederholen', widget=forms.Select(attrs={'id': 'frequency', 'class': 'form-choicefield'}))
     deadlineDate = forms.DateField(label='Startdatum', widget=forms.DateInput(format=('%Y-%m-%d'), attrs={'id': 'deadlineDate','type': 'date', 'value': datetime.date.today}))
@@ -60,7 +60,7 @@ class TaskAddForm(forms.ModelForm):
 
 
 class TaskEditForm(forms.ModelForm):
-    responsibility = forms.ModelChoiceField(queryset=User.objects.all(), required=True, label='Nächste Zuständigkeitsperson', widget=forms.Select(attrs={'id': 'responsibility','class': 'form-choicefield'}))
+    responsibility = forms.ModelChoiceField(queryset=User.objects.all(), required=True, label='Nächste Zuständigkeitsperson', widget=forms.Select(attrs={'id': 'responsibility','class': 'form-choicefield'}), empty_label=None)
     frequency = forms.ChoiceField(choices=FREQUENCY_CHOICES, label='Wiederholen', widget=forms.Select(attrs={'id': 'frequency', 'class': 'form-choicefield'}))
     deadlineDate = forms.DateField(label='Startdatum', widget=forms.DateInput(format=('%Y-%m-%d'), attrs={'id': 'deadlineDate','type': 'date', 'value': datetime.date.today}))
 

@@ -11,8 +11,18 @@
     background: #F3F2ED;
     border: none;
     font-size: 3.5em;
+    font-family: 'Avenir Next'; 
+}
+
+.form-headline-2{
+    color: #006400; 
+    background: #F3F2ED;
+    border: none;
+    font-size: 1.5em;
+    margin-top: 2em;
     font-family: 'Avenir Next';   
 }
+
 
 .form-headline, .form-number {
     font-weight: bold;

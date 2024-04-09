@@ -20,7 +20,7 @@ def detail_view(request, id_dish=None):
     else:
         dish = None
 
-    form = DishForm(instance=dish)
+    form = DishForm(instance=dish, initial={'chef': User.objects.first().id_user})
     if request.method == "POST":
         form = DishForm(request.POST, instance=dish)
         if 'save' in request.POST:
