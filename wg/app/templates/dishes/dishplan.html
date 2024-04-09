@@ -6,31 +6,13 @@
     </head>
     <body>
         <div class="header">
-            {% block content %}
             {% include 'sidebar.html' %}
-            {% endblock content %}
             <h1>WOCHENPLAN</h1>
+            <a href="{% url 'dishes' %}" class="btn">Alle Gerichte</a>
         </div>
-        <!--
-        <button class="btn" onclick=editMode()>Bearbeiten</button>
-        <div class="popup" id="isInEditMode">
-                {% for weekday, form in dishplan_settings %}
-                <table>
-                    <tr>
-                        <td style="width: 50%;"><h3 class="h3-popup">{{ weekday }}</h3></td>
-                        <td style="width: 50%;">{{ form }}</td>
-                    </tr>
-                </table>
-                {% endfor %}
-            <form method="post">
-                {% csrf_token %}
-                <button type="submit" class="btn-popup">Speichern</button>
-            </form>
-        </div>
-        -->
-
+‘
         <div class="content">
-            <table style="width: 100%;">
+            <table style="width: 100%;" class="list">
                 {% for weekday, date, dishType, dish in dishplan %}
                     <tr>
                         <td>
