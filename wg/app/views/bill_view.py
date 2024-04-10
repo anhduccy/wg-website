@@ -20,11 +20,6 @@ def list_view(request):
     deadline = datetime.datetime(year=now.year, month=now.month, day=27).strftime("%Y-%m-%d")
 
     transactions = Transaction.objects.filter(isActive=1)
-
-    try: 
-        Bill.objects.filter(deadlineDate=deadline)
-    except:
-        createBill(now=now, deadline=deadline, transactions=transactions)
     
     if request.method == "POST":
         createBill(now=now, deadline=deadline, transactions=transactions)

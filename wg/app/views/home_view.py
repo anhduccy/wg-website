@@ -8,7 +8,7 @@ import datetime
 
 def view(request):
     try:
-        tasks = Task.objects.filter(isDone=0)
+        tasks = Task.objects.filter(isDone=0).order_by('deadlineDate')
         if tasks.count() == 0: 
             tasks = None
         else: 
@@ -39,11 +39,17 @@ def view(request):
         usersTuple = None
 
     today = datetime.date.today().strftime("%Y-%m-%d")
-    obj = Dishplan.objects.get(date=today)
-    try: dishOfTheDay = Dish.objects.get(pk=obj.dish.id_dish)
+    
+    try:
+        obj = Dishplan.objects.get(date=today) 
+        dishOfTheDay = Dish.objects.get(pk=obj.dish.id_dish)
     except: dishOfTheDay = None
-    weekday_of_dishType = DishplanSettings.objects.get(pk=datetime.date.today().weekday())
-    dishType = DishType.objects.get(pk=weekday_of_dishType.dishType.id_dishType)  
+    
+    try: 
+        weekday_of_dishType = DishplanSettings.objects.get(pk=datetime.date.today().weekday())
+        dishType = DishType.objects.get(pk=weekday_of_dishType.dishType.id_dishType)  
+    except:
+        dishType = None
 
     try: 
         bill = Bill.objects.filter(deadlineDate__gte=today).order_by('deadlineDate').first()

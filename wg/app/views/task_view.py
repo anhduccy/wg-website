@@ -8,16 +8,17 @@ from wg.forms import TaskAddForm, TaskEditForm, TaskCheckboxForm
 
 
 def list_view(request):    
+    tasks = Task.objects.filter(isDone=0).order_by('deadlineDate')
     TaskFormSet = modelformset_factory(model=Task, form=TaskCheckboxForm, extra=0, fields = ('isDone',))
-    formset = TaskFormSet()
+    formset = TaskFormSet(queryset=tasks)
 
     if request.method == "POST":
-        formset = TaskFormSet(request.POST)
+        formset = TaskFormSet(request.POST, queryset=tasks)
         if formset.is_valid():
             for form in formset:
                 form.save()
 
-    formset = TaskFormSet()
+    formset = TaskFormSet(queryset=tasks)
 
     context = {'formset': formset}
     template = loader.get_template("tasks/task_view.html")
