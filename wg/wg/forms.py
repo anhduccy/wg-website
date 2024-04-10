@@ -59,17 +59,11 @@ class TaskAddForm(forms.ModelForm):
         task.save()
 
 
-class TaskEditForm(forms.ModelForm):
-    responsibility = forms.ModelChoiceField(queryset=User.objects.all(), required=True, label='Nächste Zuständigkeitsperson', widget=forms.Select(attrs={'id': 'responsibility','class': 'form-choicefield'}), empty_label=None)
-    frequency = forms.ChoiceField(choices=FREQUENCY_CHOICES, label='Wiederholen', widget=forms.Select(attrs={'id': 'frequency', 'class': 'form-choicefield'}))
-    deadlineDate = forms.DateField(label='Startdatum', widget=forms.DateInput(format=('%Y-%m-%d'), attrs={'id': 'deadlineDate','type': 'date', 'value': datetime.date.today}))
-
-    class Meta:
-        model = Task
-        fields = ('responsibility', 'deadlineDate', 'frequency')
-
+class TaskEditForm(TaskAddForm):
     def save(self, commit=True):
-        task = super(TaskEditForm, self).save(commit=False)
+        task = super(TaskAddForm, self).save(commit=False)
+        task.title = self.cleaned_data['title']
+        task.points = self.cleaned_data['points']
         task.responsibility = self.cleaned_data['responsibility']
         task.deadlineDate = self.cleaned_data['deadlineDate']
         task.frequency = self.cleaned_data['frequency']

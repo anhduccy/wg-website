@@ -1,5 +1,6 @@
 from django.template.defaulttags import register
 import locale
+from wg.forms import FREQUENCY_CHOICES
 
 @register.filter(name='range')
 def filter_range(number):
@@ -19,3 +20,8 @@ def currency(a):
         a = float(a.value())
         return locale.currency(a, grouping=True)
     return ""
+
+@register.filter(name='frequency')
+def frequency(id):
+    d = dict(FREQUENCY_CHOICES)
+    return d[id]
