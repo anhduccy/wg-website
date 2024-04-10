@@ -16,7 +16,7 @@
     border: solid 1px darkgray;
 }
 
-.table-btn {
+.table-btn, .table-btn-row {
     background: #006400;
     color: #F3F2ED;
     padding: 0.5em 1.5em;
@@ -26,16 +26,25 @@
     float: right;
 }
 
+.table-btn-row{
+    color: white;
+    border-color: white;
+}
+
 .delete {
     background: #F3F2ED;
     color: red;
     border-color: red;
 }
 
-.table-btn:hover {
+.table-btn:hover, .table-btn-row:hover {
     border-color: #006400;
     color: #006400;
     background-color: #F3F2ED;
+}
+
+.table-btn-row:hover{
+    background-color: white;
 }
 
 input::-webkit-outer-spin-button,
