@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="{% static 'main.css' %}">
+        <link rel="stylesheet" href="{% static 'table.css' %}">
+        <link rel="stylesheet" href="{% static 'home.css' %}">
+    </head>
+
+    <body>
+        <div class="header" style="padding-bottom: 0;">
+            {% include 'sidebar.html' %}
+            <h1 style="text-transform: uppercase;">Startseite</h1>
+        </div>
+
+        <div class="content">
+            <div class="wrapper list">
+                <div>
+                    <div>
+                        <h2>Punktestand</h2>
+                        {% if users is None %}
+                            <p class="row">Es sind keine WG-Bewohner eingetragen</p>
+                        {% else %}
+                            <table style="width: 100%;">
+                                <tr>
+                                    {% for user in users %}
+                                    <td class="user-card">
+                                        <table class="width=100%" style="color: {% if user.0 == 1 %}goldenrod{% elif user.0 == 2 %}gray{% else %}brown{%endif%};">
+                                            <tr>
+                                                <td>
+                                                    <h2 style="color: {% if user.0 == 1 %}goldenrod{% elif user.0 == 2 %}gray{% else %}brown{%endif%};">{{user.0}}</h2>
+                                                </td>
+                                                <td>
+                                                    <p class="p-headline">{{ user.1.name }}</p>
+                                                </td>
+            
+                                                <td>
+                                                    <p>{{ user.1.points }} Punkte</p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    {% endfor %}
+                                </tr>
+                            </table>
+                        {% endif %}
+                    </div>
+        
+                    <div>
+                        <h2>Anstehende Aufgaben</h2>
+                        {% if tasks is None %}
+                            <p class="row">Es gibt keine anstehenden Aufgaben</p>
+                        {% else %}
+                            {% for form in tasks %}
+                                {% include 'tasks/task_card.html' %}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div>
+                    <div>
+                        <h2>Heutiges Abendessen</h2>
+                        {% if dish is None %}
+                            <p class="row">Keine Gerichte für den "{{ dishType.string }}"-Tag eingetragen</p>
+                        {% else %}
+                            {% include 'dishes/dish_card.html' %}
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        <h2>Nächste Rechnung</h2>
+                        {% if bill is None %}
+                            <p class="row">Es gibt keine anstehenden Rechnungen</p>
+                        {% else %}
+                            {% include 'bills/bill_card.html' %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

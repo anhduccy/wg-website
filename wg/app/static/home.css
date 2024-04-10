@@ -1,0 +1,26 @@
+.user-card {
+    background: white;
+    width: 33%;
+    height: 50px;
+    border-radius: 1em;
+    color: #006400;
+    padding-left: 1em;
+}
+
+.wrapper {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 10px;
+}
+
+@media screen and (min-width: 1400px) {
+    .wrapper {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2em;
+    }
+}
+
+h2 {
+    color: #006400;
+}
