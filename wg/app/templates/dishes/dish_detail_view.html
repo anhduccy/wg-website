@@ -38,7 +38,7 @@
 
                 <div class="navbar-detailview">
                     <button type="submit" name="save" class="btn">Speichern</button>
-                    <a href="{% url 'dishes' %}" class="btn-back">Zu "Alle Gerichte"</a>
+                    <a href="{{request.META.HTTP_REFERER}}" class="btn-back">Zurück</a>
                     <button type="submit" name="delete" class="btn-delete">Löschen</button>
                 </div>
             </form>
