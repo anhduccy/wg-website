@@ -35,7 +35,8 @@ def view(request):
             dishplan_obj = None
 
         if dishplan_obj is not None:
-            dish = Dish.objects.get(pk=dishplan_obj.dish.id_dish)
+            try: dish = Dish.objects.get(pk=dishplan_obj.dish.id_dish)
+            except: dish = None
         else:
             dish = selectDish(dishType=dishType)
             if dish is not None:    

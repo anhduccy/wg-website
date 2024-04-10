@@ -35,7 +35,7 @@ class CustomCheckboxInput(forms.CheckboxInput):
     template_name = "checkbox.html"
 
 
-FREQUENCY_CHOICES = [(0, "Einmalig"), (7, "Wöchentlich"), (14, "Alle zwei Wochen"), (30, "Monatlich")]
+FREQUENCY_CHOICES = [(0, "Einmalig"), (7, "Wöchentlich"), (14, "Alle zwei Wochen"), (30, "Monatlich"), (-1, "Bei Bedarf")]
 class TaskAddForm(forms.ModelForm):
     title = forms.CharField(required=True, label='', widget=forms.TextInput(attrs={'id': 'title', 'placeholder': 'Aufgabe', 'class': 'form-headline'}))
     responsibility = forms.ModelChoiceField(queryset=User.objects.all(), required=True, label='Nächste Zuständigkeitsperson', widget=forms.Select(attrs={'id': 'responsibility','class': 'form-choicefield'}), empty_label=None)
@@ -142,6 +142,8 @@ class TaskCheckboxForm(forms.ModelForm):
 
             if new_task.frequency == 0: #EINMALIG
                 return
+            elif new_task.frequency == -1: #BEI BEDARF
+                new_date = datetime.date.today()
             elif new_task.frequency == 30: #MONATLICH
                 new_date = TaskCheckboxForm.monthly(old_deadline, today)
             else: #WÖCHENTLICH BZW. ZWEIWÖCHENTLICH
