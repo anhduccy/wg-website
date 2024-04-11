@@ -14,9 +14,9 @@
         </div>
 
         <div class="content">
-            <div class="wrapper list">
+            <div class="wrapper">
                 <div>
-                    <div>
+                    <div class="list">
                         <h2>Punktestand</h2>
                         {% if users is None %}
                             <p class="row">Es sind keine WG-Bewohner eingetragen</p>
@@ -46,8 +46,8 @@
                         {% endif %}
                     </div>
         
-                    <div>
-                        <h2>Anstehende Aufgaben</h2>
+                    <div class="list">
+                        <h2>Fällige Aufgaben</h2>
                         {% if tasks is None %}
                             <p class="row">Es gibt keine anstehenden Aufgaben</p>
                         {% else %}
@@ -59,7 +59,7 @@
                 </div>
 
                 <div>
-                    <div>
+                    <div class="list">
                         <h2>Heutiges Abendessen</h2>
                         {% if dish is None %}
                             {% if dishType is None %}
@@ -72,7 +72,7 @@
                         {% endif %}
                     </div>
 
-                    <div>
+                    <div class="list">
                         <h2>Nächste Rechnung</h2>
                         {% if bill is None %}
                             <p class="row">Es gibt keine anstehenden Rechnungen</p>

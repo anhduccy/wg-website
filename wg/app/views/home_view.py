@@ -2,13 +2,14 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.template import loader
 from django.forms import modelformset_factory
+from django.db.models import Q
 from wg.forms import TaskCheckboxForm
 from app.models import *
 import datetime
 
 def view(request):
     try:
-        tasks = Task.objects.filter(isDone=0).order_by('deadlineDate')
+        tasks = Task.objects.filter(Q(isDone=0) & Q(frequency=-1) | Q(isDone=0) & Q(deadlineDate__lte=datetime.date.today())).order_by('deadlineDate')
         if tasks.count() == 0: 
             tasks = None
         else: 
