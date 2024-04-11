@@ -73,9 +73,9 @@
                     </div>
 
                     <div class="list">
-                        <h2>Nächste Rechnung</h2>
+                        <h2>Kommende Beitragsrechnung</h2>
                         {% if bill is None %}
-                            <p class="row">Es gibt keine anstehenden Rechnungen</p>
+                            <p class="row">Es gibt keine anstehenden Beitragsrechnungen</p>
                         {% else %}
                             {% include 'bills/bill_card.html' %}
                         {% endif %}
