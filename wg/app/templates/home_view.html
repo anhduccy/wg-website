@@ -25,10 +25,10 @@
                                 <tr>
                                     {% for user in users %}
                                     <td class="user-card">
-                                        <table class="width=100%" style="color: {% if user.0 == 1 %}goldenrod{% elif user.0 == 2 %}gray{% else %}brown{%endif%};">
+                                        <table class="width=100%" style="color: {% if user.0 == 1 %}goldenrod{% elif user.0 == 2 %}gray{% else %}#9e6c54{%endif%};">
                                             <tr>
                                                 <td>
-                                                    <h2 style="color: {% if user.0 == 1 %}goldenrod{% elif user.0 == 2 %}gray{% else %}brown{%endif%};">{{user.0}}</h2>
+                                                    <h2 style="color: {% if user.0 == 1 %}goldenrod{% elif user.0 == 2 %}gray{% else %}#9e6c54{%endif%};">{{user.0}}</h2>
                                                 </td>
                                                 <td>
                                                     <p class="p-headline">{{ user.1.name }}</p>
