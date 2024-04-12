@@ -1,0 +1,5 @@
+<table class="row" style="width: 100%;">
+    <td style="width: 2em;"><a href="{{bill.get_absolute_url}}" class="table-btn-row">Anschauen</a></td>
+    <td class="p-headline" style="text-indent: 1.5em;">Rechnung vom {{ bill.creationDate|date:"d. F Y" }}</td>
+    <td style="text-align: right;">Fällig am {{ bill.deadlineDate|date:"d. F Y" }}</td>
+</table>

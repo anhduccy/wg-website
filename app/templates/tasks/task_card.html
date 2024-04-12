@@ -1,0 +1,30 @@
+<table class="row" style="width: 100%">
+    <tr>  
+        <td style="width: 60px">
+            {{ form.isDone }}
+        </td>
+        <td>
+            {% now "d.m.Y" as today%}
+            <a href="{{ form.instance.get_absolute_url }}">
+                    <p class="p-headline">{{ form.instance.title }}</p>
+
+                    {% if form.instance.frequency == -1 %}
+                    <p style="color: gray;">{{ form.instance.responsibility }} &nbsp; |  &nbsp; {{ form.instance.frequency |frequency  }}</p>
+                    {% else %}
+                        {% if today == form.instance.deadlineDate|date:"d.m.Y" %}
+                        <p><span style="font-weight: 600; text-decoration: underline;">Heute fällig</span> &nbsp; |  &nbsp; {{ form.instance.responsibility }} &nbsp; | &nbsp; {{ form.instance.frequency |frequency }}</p>
+                        {% elif today > form.instance.deadlineDate|date:"d.m.Y" %}
+                        <p><span style="color: red; font-weight: 600; text-decoration: underline;">Überfällig</span> &nbsp; |  &nbsp; {{ form.instance.responsibility }} &nbsp; | &nbsp; {{ form.instance.frequency |frequency }}</p>
+                        {% else %}
+                        <p style="color: gray;">Fällig am {{ form.instance.deadlineDate|date:"l, d.m.Y" }} &nbsp; |  &nbsp; {{ form.instance.responsibility }} &nbsp; | &nbsp; {{ form.instance.frequency |frequency }} </p>
+                        {%endif%}
+                    {%endif%}
+            </a>
+        </td>
+        <td>
+            {% for i in form.instance.points|range %}
+            <td style="width:15px"><label class="circle"></label></td>
+            {% endfor %}
+        </td>
+    </tr>
+</table>

@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="{% static 'main.css' %}">
+        <link rel="stylesheet" href="{% static 'form.css' %}">
+    </head>
+
+    <body>
+        <div class="header">
+            {% include 'sidebar.html' %}
+        </div>
+        <div class="content">
+            <form method="post">
+                {% csrf_token %}
+                <table>
+                {% for field in task_edit_form %}
+                    {% if field.html_name == 'title' or field.html_name == 'points' %}
+                    <tr>{{field}}</tr>
+                    {% endif %}
+                {% endfor %}
+                </table>
+
+                <table>
+                    {% for field in task_edit_form %}
+                    <tr>
+                        {% if field.html_name != 'title' and field.html_name != 'points' %}
+                            <td style="width: 200px">
+                                <label for="{{ field.auto_id }}", style="font-weight: 600; color: #006400">{{ field.label }}</label>
+                            </td>
+                            <td>
+                                {{ field }}
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </table>
+
+                <div class="navbar-detailview">
+                    <button type="submit" class="btn" name="save">Speichern</button>
+                    <a href="{{request.META.HTTP_REFERER}}" class="btn-back">Zurück</a>
+                    <button type="submit" class="btn-delete" name="delete">Löschen</button>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>

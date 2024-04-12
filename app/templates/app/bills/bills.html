@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="{% static 'main.css' %}">
+        <link rel="stylesheet" href="{% static 'form.css' %}">
+        <link rel="stylesheet" href="{% static 'table.css' %}">
+    </head>
+    <body>
+        <div class="header">
+            {% include 'sidebar.html' %}
+            <h1 style="text-transform: uppercase;">Beitragsrechnungen</h1>
+            <table>
+                <tr>
+                    <td><a href="{% url 'transactions' %}" class="btn">Transaktionen</a></td>
+                    <td>
+                        <form method="post">
+                            {%csrf_token%}
+                            <button type="submit" class="btn">Neue Rechnung erstellen</button>
+                        </form>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="content">
+            <div class="list" style="width:100%">
+                {% for bill in bills %}
+                    {% include 'bills/bill_card.html' %}
+                {% endfor %}
+            </div>
+        </div>
+    </body>
+</html>

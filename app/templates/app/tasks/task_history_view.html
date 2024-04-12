@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="{% static 'main.css' %}">
+    </head>
+    <body>
+        <div class="header">
+            {% include 'sidebar.html' %}
+            <h1 style="text-transform: uppercase;">Aufgabenhistorie</h1>
+            <h3><a href="{% url 'tasks-add' %}" class="btn">Aufgabe hinzufügen</a> <a href="{% url 'tasks' %}" class="btn">Alle Aufgaben</a></h3>
+        </div>
+
+        <div class="content">
+            <table style="width:100%; text-align: center;" class="list">
+                    <tr style="color: #006400;">
+                        <th>Letzte Änderung</th>
+                        <th>Aufgaben</th>
+                        <th>Punkte</th>
+                        <th>Veranwortlich</th>
+                        <th>Fälligkeitsdatum</th>
+                        <th>Erledigt</th>
+                    </tr>
+                {% for task in tasks %}
+                    <tr style="color: #454545">
+                        <td><p>{{ task.lastChangeDate }}</p></td>
+                        <td><p>{{ task.title }}</p></td>
+                        <td><p>{{ task.points }} {% if task.points == 1 %}Punkt{%else%}Punkte{%endif%}</p></td>
+                        <td><p>{{ task.responsibility }}</p></td>
+                        <td><p>{{ task.deadlineDate|date:"j. F Y"  }}</p></td>
+                        <td><p>{% if task.isDone == 1 %}Erledigt{% else %}Noch offen{% endif %}</p></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </body>
+</html>
