@@ -120,11 +120,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_PATH = os.path.realpath(os.path.dirname('wg-app/app/'))
-STATICFILES_DIRS = (
-  os.path.join(STATIC_PATH, 'static/'),
-)
+STATIC_URL = 'static/'
+STATIC_PATH = os.path.realpath(os.path.dirname('app/'))
+STATIC_ROOT = os.path.join(STATIC_PATH, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
