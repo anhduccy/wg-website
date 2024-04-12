@@ -17,7 +17,7 @@ def list_view(request):
         if formset.is_valid():
             for form in formset:
                 form.save()
-        return('tasks')
+        return redirect('tasks')
 
     formset = TaskFormSet(queryset=tasks)
 
