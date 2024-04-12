@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import pymysql
 import wg.secrets as secrets
+import os.path
 
 pymysql.install_as_MySQLdb()
 
@@ -57,10 +58,13 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'wg.urls'
 
+
+TEMPLATE_PATH = os.path.realpath(os.path.dirname('wg-app/app/templates/'))
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATE_PATH],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
