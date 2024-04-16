@@ -9,7 +9,7 @@ import datetime
 
 def view(request):
     try:
-        tasks = Task.objects.filter(Q(isDone=0) & Q(deadlineDate__lte=datetime.date.today())).order_by('deadlineDate')
+        tasks = Task.objects.filter(~Q(frequency=-1) & Q(isDone=0) & Q(deadlineDate__lte=datetime.date.today())).order_by('deadlineDate')
         if tasks.count() == 0: 
             tasks = None
         else: 
