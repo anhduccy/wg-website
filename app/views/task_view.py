@@ -3,11 +3,12 @@ from django.shortcuts import render, redirect
 from django.template import loader
 from django.forms import modelformset_factory
 
-from app.models import Task, User
+from app.models import Task, TaskLogEvent
 from wg.forms import TaskAddForm, TaskEditForm, TaskCheckboxForm
+import datetime
 
 
-def list_view(request):    
+def list_view(request):
     tasks = Task.objects.filter(isDone=0).order_by('deadlineDate')
     TaskFormSet = modelformset_factory(model=Task, form=TaskCheckboxForm, extra=0, fields = ('isDone',))
     formset = TaskFormSet(queryset=tasks)
@@ -41,7 +42,9 @@ def detail_view(request, id_task=None):
         if 'save' in request.POST:
             new_task = form.save()
         elif 'delete' in request.POST:
-            task.delete()
+            task.isDone = 1
+            task.lastChangeDate = datetime.datetime.now()
+            task.save()
         return redirect('tasks')
     
     template = loader.get_template("tasks/task_detail_view.html")

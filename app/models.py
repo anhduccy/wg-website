@@ -85,6 +85,16 @@ class Task(models.Model):
 
     def get_absolute_url(self):
         return reverse('tasks-detail', args=[self.id_task])
+    
+
+class TaskLogEvent(models.Model):
+    id_taskLogEvent = models.BigAutoField(primary_key=True)
+    event = models.CharField(max_length=500)
+    eventDate = models.DateTimeField(default=datetime.datetime.now)
+
+    class Meta:
+        managed = True
+        db_table = 'TaskLogEvent'
 
 
 class Transaction(models.Model):
