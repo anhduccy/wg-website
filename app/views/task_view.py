@@ -7,8 +7,15 @@ from app.models import Task, TaskLogEvent
 from wg.forms import TaskAddForm, TaskEditForm, TaskCheckboxForm
 import datetime
 
+from app.task_log_event import *
+from app.functions import *
 
 def list_view(request):
+    for task in Task.objects.all():
+        try: TaskLogEvent.objects.filter(task=task)
+        except:
+            TaskLogEvent.objects.create(event=TaskLogEventDescription.error.value, task=task, ipAddress="Unbekannt")
+        
     tasks = Task.objects.filter(isDone=0).order_by('deadlineDate')
     TaskFormSet = modelformset_factory(model=Task, form=TaskCheckboxForm, extra=0, fields = ('isDone',))
     formset = TaskFormSet(queryset=tasks)
@@ -45,6 +52,8 @@ def detail_view(request, id_task=None):
             task.isDone = 1
             task.lastChangeDate = datetime.datetime.now()
             task.save()
+            TaskLogEvent.objects.create(event=TaskLogEventDescription.delete.value, task=task, ipAddress=getIP())
+            
         return redirect('tasks')
     
     template = loader.get_template("tasks/task_detail_view.html")

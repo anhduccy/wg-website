@@ -3,6 +3,9 @@ from django.forms import widgets
 from django.utils.safestring import mark_safe
 from django.template import loader
 from app.models import *
+from app.functions import *
+from app.task_log_event import *
+
 import datetime, operator
 
 
@@ -57,18 +60,34 @@ class TaskAddForm(forms.ModelForm):
         task.creationDate = datetime.datetime.now()
         task.lastChangeDate = datetime.datetime.now()
         task.save()
+        TaskLogEvent.objects.create(event=TaskLogEventDescription.added.value, task=task, ipAddress=getIP())
 
 
 class TaskEditForm(TaskAddForm):
     def save(self, commit=True):
         task = super(TaskAddForm, self).save(commit=False)
-        task.title = self.cleaned_data['title']
-        task.points = self.cleaned_data['points']
-        task.responsibility = self.cleaned_data['responsibility']
-        task.deadlineDate = self.cleaned_data['deadlineDate']
-        task.frequency = self.cleaned_data['frequency']
-        task.lastChangeDate = datetime.datetime.now()
-        task.save()
+        try: 
+            taskObj = Task.objects.get(pk=self.instance.id_task)
+            task.title = self.cleaned_data['title']
+            task.points = self.cleaned_data['points']
+            task.responsibility = self.cleaned_data['responsibility']
+            task.deadlineDate = self.cleaned_data['deadlineDate']
+            task.frequency = self.cleaned_data['frequency']
+            task.lastChangeDate = datetime.datetime.now()
+            task.save()
+            ip = getIP()
+            if str(taskObj.title) != str(task.title):
+                TaskLogEvent.objects.create(event=TaskLogEventDescription.title_changed.value, task=task, ipAddress=ip)
+            if str(taskObj.points) != str(task.points):
+                TaskLogEvent.objects.create(event=TaskLogEventDescription.points_changed.value, task=task, ipAddress=ip)
+            if str(taskObj.responsibility) != str(task.responsibility):
+                TaskLogEvent.objects.create(event=TaskLogEventDescription.responsibility_changed.value, task=task, ipAddress=ip)
+            if taskObj.deadlineDate.strftime("%Y-%m-%d") != task.deadlineDate.strftime("%Y-%m-%d"):
+                TaskLogEvent.objects.create(event=TaskLogEventDescription.deadlineDate_changed.value, task=task, ipAddress=ip)
+            if str(taskObj.frequency) != str(task.frequency):
+                TaskLogEvent.objects.create(event=TaskLogEventDescription.frequency_changed.value, task=task, ipAddress=ip)
+        except:
+            return
 
 
 class TaskCheckboxForm(forms.ModelForm):
@@ -130,6 +149,7 @@ class TaskCheckboxForm(forms.ModelForm):
         if task_obj.isDone != 1 and task.isDone == True:
             task.lastChangeDate = datetime.datetime.now() #DATE AND TIMESTAMP
             task.save()
+            TaskLogEvent.objects.create(event=TaskLogEventDescription.isDone_changed.value, task=task, ipAddress=getIP())
 
             #POINTS AWARD
             resp = User.objects.get(pk=task.responsibility.id_user)

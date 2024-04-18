@@ -90,7 +90,9 @@ class Task(models.Model):
 class TaskLogEvent(models.Model):
     id_taskLogEvent = models.BigAutoField(primary_key=True)
     event = models.CharField(max_length=500)
+    task = models.ForeignKey('Task', on_delete=models.CASCADE, db_column="task")
     eventDate = models.DateTimeField(default=datetime.datetime.now)
+    ipAddress = models.CharField(max_length=45)
 
     class Meta:
         managed = True
