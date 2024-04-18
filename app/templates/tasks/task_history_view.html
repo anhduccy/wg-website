@@ -27,10 +27,14 @@
                         <td><p>{{ task.task.title }}</p></td>
                         <td><p>{{ task.task.points }} {% if task.points == 1 %}Punkt{%else%}Punkte{%endif%}</p></td>
                         <td><p>{{ task.task.responsibility }}</p></td>
-                        <td><p>{{ task.task.deadlineDate|date:"j.m.Y"  }}</p></td>
+                        <td><p>{{ task.task.deadlineDate|date:"d.m.Y"  }}</p></td>
                         <td><p>{{ task.event }}</p></td>
                         <td><p>{{ task.ipAddress }}</p></td>
-                        <td><p>{{ task.eventDate|date:"j.m.Y H:i:s" }}</p></td>
+                        {% if task.event == "Änderungsstatus unbekannt" %}
+                        <td><p>{{ task.task.lastChangeDate|date:"d.m.Y H:i:s" }}</p></td>
+                        {% else %}
+                        <td><p>{{ task.eventDate|date:"d.m.Y H:i:s" }}</p></td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
             </table>
