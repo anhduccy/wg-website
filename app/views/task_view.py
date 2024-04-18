@@ -61,7 +61,7 @@ def detail_view(request, id_task=None):
     return HttpResponse(template.render(request=request, context=context))
 
 def history_view(request):
-    tasks = Task.objects.all().order_by('-lastChangeDate')
+    tasks = TaskLogEvent.objects.all().order_by('-eventDate')
 
     context = {'tasks': tasks}
     template = loader.get_template("tasks/task_history_view.html")

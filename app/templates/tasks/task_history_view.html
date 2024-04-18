@@ -12,23 +12,25 @@
         </div>
 
         <div class="content">
-            <table style="width:100%; text-align: center;" class="list">
+            <table style="width:100%; min-width: 1200px; text-align: center;" class="list">
                     <tr style="color: #006400;">
-                        <th>Letzte Änderung</th>
-                        <th>Aufgaben</th>
+                        <th>Aufgabe</th>
                         <th>Punkte</th>
                         <th>Veranwortlich</th>
                         <th>Fälligkeitsdatum</th>
-                        <th>Erledigt</th>
+                        <th>Aktion</th>
+                        <th>Geändert von</th>
+                        <th>Datum der Aktion</th>
                     </tr>
                 {% for task in tasks %}
                     <tr style="color: #454545">
-                        <td><p>{{ task.lastChangeDate }}</p></td>
-                        <td><p>{{ task.title }}</p></td>
-                        <td><p>{{ task.points }} {% if task.points == 1 %}Punkt{%else%}Punkte{%endif%}</p></td>
-                        <td><p>{{ task.responsibility }}</p></td>
-                        <td><p>{{ task.deadlineDate|date:"j. F Y"  }}</p></td>
-                        <td><p>{% if task.isDone == 1 %}Erledigt{% else %}Noch offen{% endif %}</p></td>
+                        <td><p>{{ task.task.title }}</p></td>
+                        <td><p>{{ task.task.points }} {% if task.points == 1 %}Punkt{%else%}Punkte{%endif%}</p></td>
+                        <td><p>{{ task.task.responsibility }}</p></td>
+                        <td><p>{{ task.task.deadlineDate|date:"j.m.Y"  }}</p></td>
+                        <td><p>{{ task.event }}</p></td>
+                        <td><p>{{ task.ipAddress }}</p></td>
+                        <td><p>{{ task.eventDate|date:"j.m.Y H:i:s" }}</p></td>
                     </tr>
                 {% endfor %}
             </table>
