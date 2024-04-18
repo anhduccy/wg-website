@@ -19,7 +19,7 @@ def list_view(request):
         formset = TaskFormSet(request.POST, queryset=tasks)
         if formset.is_valid():
             for form in formset:
-                form.save()
+                form.save(request)
         return redirect('tasks')
 
     formset = TaskFormSet(queryset=tasks)
@@ -42,12 +42,12 @@ def detail_view(request, id_task=None):
         else:
             form = TaskEditForm(request.POST, instance=task)
         if 'save' in request.POST:
-            new_task = form.save()
+            new_task = form.save(request=request)
         elif 'delete' in request.POST:
             task.isDone = 1
             task.lastChangeDate = datetime.datetime.now()
             task.save()
-            TaskLogEvent.objects.create(event=TaskLogEventDescription.delete.value, task=task, ipAddress=getIP())
+            TaskLogEvent.objects.create(event=TaskLogEventDescription.delete.value, task=task, ipAddress=getIP(request))
             
         return redirect('tasks')
     

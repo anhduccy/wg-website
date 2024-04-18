@@ -50,7 +50,7 @@ class TaskAddForm(forms.ModelForm):
         model = Task
         fields = ('title', 'points', 'responsibility', 'deadlineDate', 'frequency')
     
-    def save(self, commit=True):
+    def save(self, request, commit=True):
         task = super(TaskAddForm, self).save(commit=False)
         task.title = self.cleaned_data['title']
         task.points = self.cleaned_data['points']
@@ -60,11 +60,11 @@ class TaskAddForm(forms.ModelForm):
         task.creationDate = datetime.datetime.now()
         task.lastChangeDate = datetime.datetime.now()
         task.save()
-        TaskLogEvent.objects.create(event=TaskLogEventDescription.added.value, task=task, ipAddress=getIP())
+        TaskLogEvent.objects.create(event=TaskLogEventDescription.added.value, task=task, ipAddress=getIP(request))
 
 
 class TaskEditForm(TaskAddForm):
-    def save(self, commit=True):
+    def save(self, request, commit=True):
         task = super(TaskAddForm, self).save(commit=False)
         try: 
             taskObj = Task.objects.get(pk=self.instance.id_task)
@@ -75,7 +75,7 @@ class TaskEditForm(TaskAddForm):
             task.frequency = self.cleaned_data['frequency']
             task.lastChangeDate = datetime.datetime.now()
             task.save()
-            ip = getIP()
+            ip = getIP(request)
             if str(taskObj.title) != str(task.title):
                 TaskLogEvent.objects.create(event=TaskLogEventDescription.title_changed.value, task=task, ipAddress=ip)
             if str(taskObj.points) != str(task.points):
@@ -141,7 +141,7 @@ class TaskCheckboxForm(forms.ModelForm):
         leaderboard_sorted = sorted(leaderboard, key=operator.itemgetter(1))
         return leaderboard_sorted[0][0]
 
-    def save(self, commit=True):
+    def save(self, request, commit=True):
         task = super(TaskCheckboxForm, self).save(commit=False)
         task_obj = Task.objects.get(pk=self.instance.id_task)
         task.isDone = self.cleaned_data['isDone']
@@ -149,7 +149,7 @@ class TaskCheckboxForm(forms.ModelForm):
         if task_obj.isDone != 1 and task.isDone == True:
             task.lastChangeDate = datetime.datetime.now() #DATE AND TIMESTAMP
             task.save()
-            TaskLogEvent.objects.create(event=TaskLogEventDescription.isDone_changed.value, task=task, ipAddress=getIP())
+            TaskLogEvent.objects.create(event=TaskLogEventDescription.isDone_changed.value, task=task, ipAddress=getIP(request))
 
             #POINTS AWARD
             resp = User.objects.get(pk=task.responsibility.id_user)
