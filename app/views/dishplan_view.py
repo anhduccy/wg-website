@@ -37,8 +37,8 @@ def view(request):
             try: dish = Dish.objects.get(pk=dishplan_obj.dish.id_dish)
             except: dish = None
         else:
+            dish = selectDish(dishType=dishType) if Dish.objects.all().count() > 10 else None
             if dish is not None:    
-                dish = selectDish(dishType=dishType) if Dish.objects.all().count() > 10 else None
                 dish.lastTimeEat = date_next
                 dish.save()
                 Dishplan.objects.create(date=date_next, dish=dish)
