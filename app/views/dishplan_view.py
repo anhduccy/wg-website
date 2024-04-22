@@ -9,7 +9,6 @@ from app.models import Dish, DishType, Dishplan, DishplanSettings
 from wg.forms import DishplanSettingsForm
 
 def view(request):
-    #dishplan_settings -- ERROR
     dishplan_settings = [None] * 7
     for i in range(7):
         weekday_obj = DishplanSettings.objects.get(pk=i)
@@ -38,8 +37,8 @@ def view(request):
             try: dish = Dish.objects.get(pk=dishplan_obj.dish.id_dish)
             except: dish = None
         else:
-            dish = selectDish(dishType=dishType)
             if dish is not None:    
+                dish = selectDish(dishType=dishType) if Dish.objects.all().count() > 10 else None
                 dish.lastTimeEat = date_next
                 dish.save()
                 Dishplan.objects.create(date=date_next, dish=dish)
