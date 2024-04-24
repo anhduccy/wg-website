@@ -136,7 +136,7 @@ class TaskCheckboxForm(forms.ModelForm):
             except:
                 print("ERROR forms.py: Die Person mit der ID: ", mock_user[0], "hat keine Aufgaben zugewiesen bekommen")
             for upcoming_task in tasks:
-                mock_user[1] += upcoming_task.points
+                mock_user[1] += 1
             leaderboard.append(mock_user)
         leaderboard_sorted = sorted(leaderboard, key=operator.itemgetter(1))
         return leaderboard_sorted[0][0]
