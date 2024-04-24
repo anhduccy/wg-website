@@ -78,26 +78,26 @@ class TaskEditForm(TaskAddForm):
             ip = getIP(request)
 
             if str(taskObj.title) != str(task.title):
-                event = "Titel von " + taskObj.title +" zu " + task.title + " geändert"
+                event = "Titel geändert: " + taskObj.title +" -> " + task.title
                 TaskLogEvent.objects.create(event=event, task=task, ipAddress=ip)
 
             if str(taskObj.points) != str(task.points):
-                event = "Punkte von " + str(taskObj.points) + " zu " + str(task.points) +" geändert"
+                event = "Punkte geändert: " + str(taskObj.points) + " -> " + str(task.points)
                 TaskLogEvent.objects.create(event=event, task=task, ipAddress=ip)
 
             if str(taskObj.responsibility) != str(task.responsibility):
-                event = "Zuständigkeitsperson von " + str(taskObj.responsibility) + " zu " + str(task.responsibility) + " geändert"
+                event = "Zuständigkeitsperson geändert: " + str(taskObj.responsibility) + " -> " + str(task.responsibility)
                 TaskLogEvent.objects.create(event=event, task=task, ipAddress=ip)
 
             if taskObj.deadlineDate.strftime("%Y-%m-%d") != task.deadlineDate.strftime("%Y-%m-%d"):
-                event = "Fälligkeitsdatum vom " + taskObj.deadlineDate.strftime("%d.%m.%Y") + " auf den " + task.deadlineDate.strftime("%d.%m.%Y") + " geändert"
+                event = "Fälligkeitsdatum geändert: " + taskObj.deadlineDate.strftime("%d.%m.%Y") + " -> " + task.deadlineDate.strftime("%d.%m.%Y")
                 TaskLogEvent.objects.create(event=event, task=task, ipAddress=ip)
 
             if str(taskObj.frequency) != str(task.frequency):
                 d = dict(FREQUENCY_CHOICES)
                 freqObj = d.get(taskObj.frequency)
                 freq = d.get(int(task.frequency))
-                event = "Wiederholungsfrequenz von " + freqObj + " auf " + freq + " geändert"
+                event = "Wiederholungsfrequenz geändert: " + freqObj + " -> " + freq
                 TaskLogEvent.objects.create(event=event, task=task, ipAddress=ip)
         except:
             return
