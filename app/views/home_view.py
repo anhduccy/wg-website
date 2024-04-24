@@ -12,6 +12,7 @@ def view(request):
         tasks = Task.objects.filter(~Q(frequency=-1) & Q(isDone=0) & Q(deadlineDate__lte=datetime.date.today())).order_by('deadlineDate')
         if tasks.count() == 0: 
             tasks = None
+            formset = None
         else: 
             TaskFormSet = modelformset_factory(model=Task, form=TaskCheckboxForm, extra=0, fields = ('isDone',))
             formset = TaskFormSet(queryset=tasks)
