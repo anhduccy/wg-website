@@ -76,16 +76,29 @@ class TaskEditForm(TaskAddForm):
             task.lastChangeDate = datetime.datetime.now()
             task.save()
             ip = getIP(request)
+
             if str(taskObj.title) != str(task.title):
-                TaskLogEvent.objects.create(event=TaskLogEventDescription.title_changed.value, task=task, ipAddress=ip)
+                event = "Titel von " + taskObj.title +" zu " + task.title + " geändert"
+                TaskLogEvent.objects.create(event=event, task=task, ipAddress=ip)
+
             if str(taskObj.points) != str(task.points):
-                TaskLogEvent.objects.create(event=TaskLogEventDescription.points_changed.value, task=task, ipAddress=ip)
+                event = "Punkte von " + str(taskObj.points) + " zu " + str(task.points) +" geändert"
+                TaskLogEvent.objects.create(event=event, task=task, ipAddress=ip)
+
             if str(taskObj.responsibility) != str(task.responsibility):
-                TaskLogEvent.objects.create(event=TaskLogEventDescription.responsibility_changed.value, task=task, ipAddress=ip)
+                event = "Zuständigkeitsperson von " + str(taskObj.responsibility) + " zu " + str(task.responsibility) + " geändert"
+                TaskLogEvent.objects.create(event=event, task=task, ipAddress=ip)
+
             if taskObj.deadlineDate.strftime("%Y-%m-%d") != task.deadlineDate.strftime("%Y-%m-%d"):
-                TaskLogEvent.objects.create(event=TaskLogEventDescription.deadlineDate_changed.value, task=task, ipAddress=ip)
+                event = "Fälligkeitsdatum vom " + taskObj.deadlineDate.strftime("%d.%m.%Y") + " auf den " + task.deadlineDate.strftime("%d.%m.%Y") + " geändert"
+                TaskLogEvent.objects.create(event=event, task=task, ipAddress=ip)
+
             if str(taskObj.frequency) != str(task.frequency):
-                TaskLogEvent.objects.create(event=TaskLogEventDescription.frequency_changed.value, task=task, ipAddress=ip)
+                d = dict(FREQUENCY_CHOICES)
+                freqObj = d.get(taskObj.frequency)
+                freq = d.get(int(task.frequency))
+                event = "Wiederholungsfrequenz von " + freqObj + " auf " + freq + " geändert"
+                TaskLogEvent.objects.create(event=event, task=task, ipAddress=ip)
         except:
             return
 

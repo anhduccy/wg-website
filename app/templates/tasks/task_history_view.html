@@ -3,6 +3,11 @@
 <html>
     <head>
         <link rel="stylesheet" href="{% static 'main.css' %}">
+        <style>
+            .cell td {
+                border:1px solid gray;
+            }
+        </style>
     </head>
     <body>
         <div class="header">
@@ -12,29 +17,23 @@
         </div>
 
         <div class="content">
-            <table style="width:100%; min-width: 1200px; text-align: center;" class="list">
+            <table style="width:100%; min-width: 1200px; text-align: left;" class="list">
                     <tr style="color: #006400;">
                         <th>Aufgabe</th>
-                        <th>Punkte</th>
-                        <th>Veranwortlich</th>
-                        <th>Fälligkeitsdatum</th>
-                        <th>Aktion</th>
                         <th>Geändert von</th>
-                        <th>Datum der Aktion</th>
+                        <th>Ändererungsdatum</th>
+                        <th>Änderung</th>
                     </tr>
                 {% for task in tasks %}
-                    <tr style="color: #454545">
+                    <tr style="color: #454545" class="cell">
                         <td><p>{{ task.task.title }}</p></td>
-                        <td><p>{{ task.task.points }} {% if task.points == 1 %}Punkt{%else%}Punkte{%endif%}</p></td>
-                        <td><p>{{ task.task.responsibility }}</p></td>
-                        <td><p>{{ task.task.deadlineDate|date:"d.m.Y"  }}</p></td>
-                        <td><p>{{ task.event }}</p></td>
                         <td><p>{{ task.ipAddress }}</p></td>
                         {% if task.event == "Änderungsstatus unbekannt" %}
                         <td><p>{{ task.task.lastChangeDate|date:"d.m.Y H:i:s" }}</p></td>
                         {% else %}
                         <td><p>{{ task.eventDate|date:"d.m.Y H:i:s" }}</p></td>
                         {% endif %}
+                        <td style="text-align: left;"><p>{{ task.event }}</p></td>
                     </tr>
                 {% endfor %}
             </table>
