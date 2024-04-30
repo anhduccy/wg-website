@@ -27,7 +27,7 @@
                 {% for task in tasks %}
                     <tr style="color: #454545" class="cell">
                         <td><p>{{ task.task.title }}</p></td>
-                        <td><p>{{ task.ipAddress }}</p></td>
+                        <td><p>{{ task.ipAddress.user }}</p></td>
                         {% if task.event == "Änderungsstatus unbekannt" %}
                         <td><p>{{ task.task.lastChangeDate|date:"d.m.Y H:i:s" }}</p></td>
                         {% else %}

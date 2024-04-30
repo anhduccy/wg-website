@@ -92,7 +92,7 @@ class TaskLogEvent(models.Model):
     event = models.CharField(max_length=500)
     task = models.ForeignKey('Task', on_delete=models.CASCADE, db_column="task")
     eventDate = models.DateTimeField(default=datetime.datetime.now)
-    ipAddress = models.CharField(max_length=45)
+    ipAddress = models.ForeignKey('IP', on_delete=models.DO_NOTHING, db_column='ipAddress')
 
     class Meta:
         managed = True
@@ -131,3 +131,12 @@ class TransactionBillEntry(models.Model):
     class Meta:
         managed=True
         db_table = 'TransactionBillEntry'
+
+
+class IP(models.Model):
+    id_IP = models.CharField(primary_key=True, max_length=20, unique=True)
+    user = models.ForeignKey("User", on_delete=models.CASCADE, db_column='user')
+
+    class Meta:
+        managed=True
+        db_table = 'IP'
