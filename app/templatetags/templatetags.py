@@ -1,6 +1,7 @@
 from django.template.defaulttags import register
 import locale
 from wg.forms import FREQUENCY_CHOICES
+from datetime import date
 
 @register.filter(name='range')
 def filter_range(number):
@@ -25,3 +26,11 @@ def currency(a):
 def frequency(id):
     d = dict(FREQUENCY_CHOICES)
     return d[id]
+
+@register.filter
+def is_today(self):
+    return date.today() == self.date()
+
+@register.filter
+def is_past(self):
+    return date.today() > self.date()

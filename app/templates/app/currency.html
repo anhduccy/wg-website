@@ -1,3 +1,0 @@
-{% load i18n %}
-{% load l10n %}
-<input type="text" name="{{ widget.name }}"{% if widget.value != None %} value="{%language 'en'%}{{ widget.value|floatformat:2 }}{% endlanguage %}"{% endif %}{% include "django/forms/widgets/attrs.html" %}>
