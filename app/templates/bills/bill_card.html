@@ -1,5 +1,7 @@
-<table class="row" style="width: 100%;">
-    <td style="width: 2em;"><a href="{{bill.get_absolute_url}}" {% if bill.deadlineDate|is_past %}class="table-btn-row-2"{%else%}class="table-btn-row"{%endif %}>Anschauen</a></td>
-    <td class="p-headline" style="text-indent: 1.5em; {% if bill.deadlineDate|is_past %} font-weight: 500; {% endif %}">Rechnung vom {{ bill.creationDate|date:"d. F Y" }}</td>
-    <td style="text-align: right;">Fällig am {{ bill.deadlineDate|date:"d.m.Y" }}</td>
-</table>
+<a href="{{bill.get_absolute_url}}">
+    <table class="row" style="width: 100%;">
+        <td style="width: 6em;"><div {% if bill.deadlineDate|is_past %}class="label-past"{%else%}class="label-recent"{%endif %}>{% if bill.deadlineDate|is_past %}Vergangen{%else%}Noch Offen{% endif %}</div></td>
+        <td class="p-headline" style="text-indent: 1.5em; {% if bill.deadlineDate|is_past %} font-weight: 400; {% endif %}">Rechnung vom {{ bill.creationDate|date:"d. F Y" }}</td>
+        <td style="text-align: right; font-weight: 400;">Fällig am {{ bill.deadlineDate|date:"d.m.Y" }}</td>
+    </table>
+</a>

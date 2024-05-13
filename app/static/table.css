@@ -16,28 +16,32 @@
     border: solid 1px darkgray;
 }
 
-.table-btn, .table-btn-row {
+.table-btn {
     background: #006400;
     color: #F3F2ED;
 }
 
-.table-btn, .table-btn-row, .table-btn-row-2{
+.table-btn, .label-recent, .label-past{
     padding: 0.5em 1.5em;
     border: solid 1px #F3F2ED;
     border-radius: 1000em;
     font-size: small;
     float: right;
+    text-align: center;
 }
 
-.table-btn-row{
-    color: white;
-    border-color: white;
+.label-recent{
+    background: #006400;
+    border-color: #006400;
+    color: #F3F2ED;
+    width: 6em;
 }
 
-.table-btn-row-2{
+.label-past{
     background: white;
     color: #006400;
     border-color: #006400;
+    width: 6em;
 }
 
 .delete {
