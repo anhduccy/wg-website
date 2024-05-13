@@ -4,6 +4,7 @@ from django.template import loader
 import datetime
 import wg.renderer
 import wg.secrets
+import dateutil.relativedelta as dateutil
 
 from app.models import Bill, TransactionBillEntry, Transaction
 
@@ -40,13 +41,17 @@ def pdf_view(request, id_bill=None):
         tuple = (transaction, transaction.sum/3)
         transactions.append(tuple)
         sum += transaction.sum
+
+   
+
     
     context = {
         'bill': bill,
         'transactions': transactions,
         'user_info': wg.secrets.UserInfo,
         'sumWG': sum,
-        'sum': sum/3
+        'sum': sum/3,
+        'next_date': bill.deadlineDate + dateutil.relativedelta(months=1)
     }
     response = wg.renderer.render_to_pdf("pdf/bill.html", context)
 
