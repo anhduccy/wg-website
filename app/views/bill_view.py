@@ -15,7 +15,7 @@ def createBill(now, deadline, transactions):
                 TransactionBillEntry.objects.create(bill=new_bill, transaction=transaction)
 
 def list_view(request):
-    bills = Bill.objects.all()
+    bills = Bill.objects.all().order_by('-deadlineDate')
 
     now = datetime.datetime.now()
     deadline = datetime.datetime(year=now.year, month=now.month, day=27).strftime("%Y-%m-%d")
@@ -25,7 +25,7 @@ def list_view(request):
     if request.method == "POST":
         createBill(now=now, deadline=deadline, transactions=transactions)
         
-    context = {'bills': bills}
+    context = {'bills': bills, 'last_bill': bills.first}
     template = loader.get_template("bills/bills.html")
     
     return HttpResponse(template.render(request=request, context=context))
@@ -41,9 +41,6 @@ def pdf_view(request, id_bill=None):
         tuple = (transaction, transaction.sum/3)
         transactions.append(tuple)
         sum += transaction.sum
-
-   
-
     
     context = {
         'bill': bill,

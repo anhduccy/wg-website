@@ -16,7 +16,9 @@
                     <td>
                         <form method="post">
                             {%csrf_token%}
+                            {% if last_bill.deadlineDate|is_past %}
                             <button type="submit" class="btn">Neue Rechnung erstellen</button>
+                            {% endif %}
                         </form>
                     </td>
                 </tr>

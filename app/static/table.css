@@ -19,6 +19,9 @@
 .table-btn, .table-btn-row {
     background: #006400;
     color: #F3F2ED;
+}
+
+.table-btn, .table-btn-row, .table-btn-row-2{
     padding: 0.5em 1.5em;
     border: solid 1px #F3F2ED;
     border-radius: 1000em;
@@ -31,20 +34,16 @@
     border-color: white;
 }
 
+.table-btn-row-2{
+    background: white;
+    color: #006400;
+    border-color: #006400;
+}
+
 .delete {
     background: #F3F2ED;
     color: red;
-    border-color: red;
-}
-
-.table-btn:hover, .table-btn-row:hover {
-    border-color: #006400;
-    color: #006400;
-    background-color: #F3F2ED;
-}
-
-.table-btn-row:hover{
-    background-color: white;
+    border-color: red;;
 }
 
 input::-webkit-outer-spin-button,
