@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.template import loader
 from django.forms import modelformset_factory
 
-from app.models import Task, TaskLogEvent
+from app.models import Task, TaskLogEvent, IP, User
 from wg.forms import TaskAddForm, TaskEditForm, TaskCheckboxForm
 import datetime
 
@@ -57,7 +57,13 @@ def detail_view(request, id_task=None):
 
 def history_view(request):
     tasks = TaskLogEvent.objects.all().order_by('-eventDate', '-task_id')
+    tasks_t = []
+    for task in tasks:
+        try:
+            task_t = [task,  IP.objects.get(pk=task.ipAddress).user.name]
+        except: task_t = [task, task.ipAddress]
+        tasks_t.append(task_t)
 
-    context = {'tasks': tasks}
+    context = {'tasks': tasks_t}
     template = loader.get_template("tasks/task_history_view.html")
     return HttpResponse(template.render(request=request, context=context))

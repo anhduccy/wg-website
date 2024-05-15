@@ -92,7 +92,7 @@ class TaskLogEvent(models.Model):
     event = models.CharField(max_length=500)
     task = models.ForeignKey('Task', on_delete=models.CASCADE, db_column="task")
     eventDate = models.DateTimeField(default=datetime.datetime.now)
-    ipAddress = models.ForeignKey('IP', on_delete=models.DO_NOTHING, db_column='ipAddress')
+    ipAddress = models.CharField(max_length=20)
 
     class Meta:
         managed = True
