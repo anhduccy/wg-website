@@ -48,13 +48,20 @@
         
                     <div class="list">
                         <h2>Fällige Aufgaben</h2>
-                        {% if tasks is None %}
-                            <p class="row">Es gibt keine anstehenden Aufgaben</p>
-                        {% else %}
-                            {% for form in tasks %}
-                                {% include 'tasks/task_card.html' %}
-                            {% endfor %}
-                        {% endif %}
+                        <form method="post">
+                            {% csrf_token %}
+                            {% if tasks is None %}
+                                <p class="row">Es gibt keine anstehenden Aufgaben</p>
+                            {% else %}
+                                {{ tasks.management_form }}
+                                {% for form in tasks %}
+                                    {% include 'tasks/task_card.html' %}
+                                    {% for hidden in form.hidden_fields %}
+                                        {{ hidden }}
+                                    {% endfor %}
+                                {% endfor %}
+                            {% endif %}
+                        </form>
                     </div>
                 </div>
 

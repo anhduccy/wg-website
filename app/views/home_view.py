@@ -20,9 +20,9 @@ def view(request):
                 formset = TaskFormSet(request.POST, queryset=tasks)
                 if formset.is_valid():
                     for form in formset:
-                        form.save()
-                        return redirect('home')
-            formset = TaskFormSet(queryset=tasks)
+                        form.save(request)
+                return redirect('home')
+        formset = TaskFormSet(queryset=tasks)
     except:
         formset = None
 
