@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.template import loader
 from django.forms import modelformset_factory
+from django.db.models import Case, Value, When
 
 from app.models import Task, TaskLogEvent, IP, User
 from wg.forms import TaskAddForm, TaskEditForm, TaskCheckboxForm
@@ -11,7 +12,7 @@ from app.task_log_event import *
 from app.functions import *
 
 def list_view(request):
-    tasks = Task.objects.filter(isDone=0).order_by('deadlineDate')
+    tasks = Task.objects.filter(isDone=0).annotate(custom_order=Case(When(frequency="-1", then=Value(1)), default=Value(0))).order_by('custom_order','deadlineDate')
     TaskFormSet = modelformset_factory(model=Task, form=TaskCheckboxForm, extra=0, fields = ('isDone',))
     formset = TaskFormSet(queryset=tasks)
 
