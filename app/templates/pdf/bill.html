@@ -38,9 +38,20 @@
             </tr>
             {% endfor %}
             <tr>
-                <th style="text-align: left;">Gesamt</th>
-                <td style="text-align: right;">{{sumWG | floatformat:"2g"}}€</td>
-                <th style="text-align: right;">{{sum | floatformat:"2g"}}€</th>
+                <td style="text-align: left;">
+                    <b>Gesamt</b>
+                    <br>
+                    <i>Vergleich zum Vormonat</i>
+                </td>
+                <td style="text-align: right;">
+                    {{sumWG | floatformat:"2g"}}€
+                    <br>
+                    <span style="{% if sumWG_last_month > 0 %} color: red; {%else%} color:green; {% endif %}"><i>{{sumWG_last_month | floatformat:"2g"}}€</i></span></td>
+                <td style="text-align: right;">
+                    <b>{{sum | floatformat:"2g"}}€</b>
+                    <br>
+                    <span style="{% if sum_last_month > 0 %} color: red; {%else%} color:green; {% endif %}"><i>{{sum_last_month | floatformat:"2g"}}€</i></span>
+                </td>
             </tr>
         </table>
 
