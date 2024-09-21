@@ -110,34 +110,19 @@ class TaskCheckboxForm(forms.ModelForm):
         model = Task
         fields = ('isDone',)
     
-    def monthly(old_deadline, today):
-        day = old_deadline.day
-        if old_deadline < today: #Wenn Deadline in der Vergangenheit
-            if today.month == 12:
-                month = 1
-                year = today.year + 1
-            else:
-                month = today.month + 1
-                year = today.year
-            new_date = datetime.datetime(year=year, month=month, day=day)
-        else: #Wenn Deadline in der Zukunft
-            if old_deadline.month == 12: 
-                month = 1
-                year = old_deadline.year + 1
-            else:
-                month = old_deadline.month + 1
-                year = old_deadline.year
-            new_date = datetime.datetime(year=year, month=month, day=day)
+    def monthly(today):
+        if today.month == 12:
+            month = 1
+            year = today.year + 1
+        else:
+            month = today.month + 1
+            year = today.year
+        new_date = datetime.datetime(year=year, month=month, day=today.day)
         return new_date
     
-    def weekly(new_task, old_deadline, today):
+    def weekly(new_task, today):
         freq = new_task.frequency
-        new_date = old_deadline + datetime.timedelta(days=freq)
-        if new_date < today:
-            weekday_delta = old_deadline.weekday() - today.weekday()
-            if weekday_delta < 0:
-                weekday_delta += 7        
-            new_date = today + datetime.timedelta(days=weekday_delta)
+        new_date = today + datetime.timedelta(days=freq)
         return new_date
     
     def getNextResponsibility():
@@ -171,16 +156,15 @@ class TaskCheckboxForm(forms.ModelForm):
 
             new_task = Task.objects.get(pk=self.instance.id_task)
             today = datetime.datetime.strptime(datetime.datetime.now().strftime('%Y-%m-%d'), '%Y-%m-%d')
-            old_deadline = datetime.datetime.strptime(new_task.deadlineDate.strftime('%Y-%m-%d'), '%Y-%m-%d')
-
+            
             if new_task.frequency == 0: #EINMALIG
                 return
             elif new_task.frequency == -1: #BEI BEDARF
                 new_date = datetime.date.today()
             elif new_task.frequency == 30: #MONATLICH
-                new_date = TaskCheckboxForm.monthly(old_deadline, today)
+                new_date = TaskCheckboxForm.monthly(today)
             else: #WÖCHENTLICH BZW. ZWEIWÖCHENTLICH
-                new_date = TaskCheckboxForm.weekly(new_task, old_deadline, today)
+                new_date = TaskCheckboxForm.weekly(new_task, today)
             
             new_task.responsibility = TaskCheckboxForm.getNextResponsibility()
                     
