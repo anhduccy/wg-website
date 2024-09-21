@@ -2,10 +2,10 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.template import loader
 from django.forms import modelformset_factory
-from django.db.models import Case, Value, When
+from django.db.models import Q, Case, Value, When
 
 from app.models import Task, TaskLogEvent, IP, User
-from wg.forms import TaskAddForm, TaskEditForm, TaskCheckboxForm
+from wg.forms import TaskAddForm, TaskEditForm, TaskCheckboxForm, TaskSearchForm
 import datetime
 
 from app.task_log_event import *
@@ -13,6 +13,13 @@ from app.functions import *
 
 def list_view(request):
     tasks = Task.objects.filter(isDone=0).annotate(custom_order=Case(When(frequency="-1", then=Value(1)), default=Value(0))).order_by('custom_order','deadlineDate')
+
+    search_form = TaskSearchForm(request.GET or None)
+    if search_form.is_valid():
+        query = search_form.cleaned_data.get('query')
+        if query:
+            tasks = tasks.filter(Q(title__icontains=query))
+
     TaskFormSet = modelformset_factory(model=Task, form=TaskCheckboxForm, extra=0, fields = ('isDone',))
     formset = TaskFormSet(queryset=tasks)
 
@@ -25,7 +32,7 @@ def list_view(request):
 
     formset = TaskFormSet(queryset=tasks)
 
-    context = {'formset': formset}
+    context = {'formset': formset, 'search_form': search_form}
     template = loader.get_template("tasks/task_view.html")
     return HttpResponse(template.render(request=request, context=context))
 

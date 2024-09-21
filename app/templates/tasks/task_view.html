@@ -3,17 +3,28 @@
 <html>
     <head>
         <link rel="stylesheet" href="{% static 'main.css' %}">
+        <link rel="stylesheet" href="{% static 'form.css' %}">
     </head>
     <body>
         <div class="header">
             {% block content %}
             {% include 'sidebar.html' %}
             {% endblock content %}
-            <h1 style="text-transform: uppercase;">Alle Aufgaben</h1>
-            <h3><a href="{% url 'tasks-add' %}" class="btn">Aufgabe hinzufügen</a> <a href="{% url 'tasks-history' %}" class="btn">Historie</a></h3>
+            <table style="margin-top: -1.5em;">
+                <tr><h1 style="text-transform: uppercase;">Alle Aufgaben</h1></tr>
+                <tr>
+                    <td><h3><a href="{% url 'tasks-add' %}" class="btn">Hinzufügen</a></h3></td>
+                    <td><h3><a href="{% url 'tasks-history' %}" class="btn">Historie</a></h3></td>
+                    <td style="width: 100%;"></td>
+                    <form style="text-align: right;" method="GET" action="{% url 'tasks' %}">
+                        <td>{{ search_form }}</td>
+                        <td><button type="submit" class="btn">Suchen</button></td>
+                    </form>
+                </tr>
+            </table>
         </div>
 
-        <div class="content">
+        <div class="content" style="margin-top: -4em;">
             <div class="list">
                 <table>
                     <td>

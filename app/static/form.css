@@ -23,12 +23,11 @@
     font-family: 'Avenir Next';   
 }
 
-
 .form-headline, .form-number {
     font-weight: bold;
 }
 
-.form-number, .form-textfield, .form-choicefield{
+.form-number, .form-textfield, .form-choicefield, .searchbar{
     font-family: 'Avenir Next';
     color: #006400; 
     border: none;}
@@ -74,4 +73,11 @@ input[type=number]{
 .navbar-detailview{
     position: fixed;
     bottom: 3em;
+}
+
+.searchbar{
+    font-size: 1em;
+    border-radius: 1000em;
+    padding: 0.6em 1.8em;
+    width: 15vw
 }
