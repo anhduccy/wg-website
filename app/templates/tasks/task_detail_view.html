@@ -4,6 +4,24 @@
     <head>
         <link rel="stylesheet" href="{% static 'main.css' %}">
         <link rel="stylesheet" href="{% static 'form.css' %}">
+
+        <script>
+            function checkCondition() {
+                // Beispielbedingung: Wenn das Eingabefeld 'title' leer ist
+                var freqField = document.getElementById('frequency');
+                if (freqField.value === '-1') {
+                    document.getElementById('deadlineDate').style.display = 'none';
+                } else {
+                    document.getElementById('deadlineDate').style.display = 'block';
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                var freqField = document.getElementById('frequency');
+                freqField.addEventListener('input', checkCondition);
+                checkCondition(); // Initialer Check beim Laden der Seite
+            });
+        </script>
     </head>
 
     <body>
@@ -23,7 +41,6 @@
 
                 <table>
                     {% for field in task_edit_form %}
-                    <tr>
                         {% if field.html_name != 'title' and field.html_name != 'points' %}
                             <td style="width: 200px">
                                 <label for="{{ field.auto_id }}", style="font-weight: 600; color: #006400">{{ field.label }}</label>

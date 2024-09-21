@@ -44,11 +44,11 @@ class TaskAddForm(forms.ModelForm):
     responsibility = forms.ModelChoiceField(queryset=User.objects.all(), required=True, label='Nächste Zuständigkeitsperson', widget=forms.Select(attrs={'id': 'responsibility','class': 'form-choicefield'}), empty_label=None)
     points = forms.IntegerField(required=True, label='Punkte', widget=forms.NumberInput(attrs={'id': 'points', 'placeholder': 'Punkte', 'class': 'form-number'}))
     frequency = forms.ChoiceField(choices=FREQUENCY_CHOICES, label='Wiederholen', widget=forms.Select(attrs={'id': 'frequency', 'class': 'form-choicefield'}))
-    deadlineDate = forms.DateField(label='Startdatum', widget=forms.DateInput(format=('%Y-%m-%d'), attrs={'id': 'deadlineDate','type': 'date', 'value': datetime.date.today}))
+    deadlineDate = forms.DateField(label='', widget=forms.DateInput(format=('%Y-%m-%d'), attrs={'id': 'deadlineDate','type': 'date', 'value': datetime.date.today}))
     
     class Meta:
         model = Task
-        fields = ('title', 'points', 'responsibility', 'deadlineDate', 'frequency')
+        fields = ('title', 'points', 'responsibility', 'frequency', 'deadlineDate')
     
     def save(self, request, commit=True):
         task = super(TaskAddForm, self).save(commit=False)
