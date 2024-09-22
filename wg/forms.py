@@ -175,7 +175,7 @@ class TaskCheckboxForm(forms.ModelForm):
                                 points = new_task.points)
             
 class TaskSearchForm(forms.Form):
-     query = forms.CharField(label='', max_length=100, required=False, widget=forms.TextInput(attrs={'id': 'search', 'placeholder': 'Tippe ein und drücke Enter, um zu suchen', 'class': 'searchbar'}))
+     query = forms.CharField(label='', max_length=100, required=False, widget=forms.TextInput(attrs={'id': 'search', 'placeholder': 'Tippe ein und drücke Enter, um zu suchen', 'class': 'searchbar', 'size': '50'}))
 
 class CurrencyInput(forms.NumberInput):
     template_name = "currency.html"
