@@ -12,12 +12,10 @@
             {% endblock content %}
             <h1 style="text-transform: uppercase;">Alle Aufgaben</h1>
             <table>
-                <tr>
-                    <form method="GET" action="{% url 'tasks' %}">
-                        <td>{{ search_form }}</td>
-                        <td><button type="submit" class="btn">Suchen</button></td>
-                    </form>
-                </tr>
+                <form method="GET" action="{% url 'tasks' %}">
+                    <td>{{ search_form }}</td>
+                    <td><button type="submit" class="btn">Suchen</button></td>
+                </form>
             </table>
             <table style="margin-top: 0.5em;">
                 <td style="padding-left: 1vw;"><a href="{% url 'tasks-add' %}" class="sidebar-col">Neue Aufgabe hinzufügen</a></td>
