@@ -11,18 +11,20 @@
             {% include 'sidebar.html' %}
             {% endblock content %}
             <h1 style="text-transform: uppercase;">Alle Aufgaben</h1>
-            <h3>
-                <a href="{% url 'tasks-add' %}" class="btn">Hinzufügen</a>
-                <a href="{% url 'tasks-history' %}" class="btn">Historie</a>
-                <table align="right" style="margin-top: -1em;">
-                    <form style="text-align: right;" method="GET" action="{% url 'tasks' %}"></form>
-                        <tr>
+            <table>
+                <tr>
+                    <td>
+                        <form style="text-align: right;" method="GET" action="{% url 'tasks' %}">
                             <td>{{ search_form }}</td>
                             <td><button type="submit" class="btn">Suchen</button></td>
-                        </tr>
-                    </form>
-                </table>
-            </h3>
+                        </form>
+                    </td>
+                    <td style="padding-left: 1vw;"><a href="{% url 'tasks-add' %}" class="sidebar-col">Neue Aufgabe hinzufügen</a></td>
+                    <td>
+                        <h3><a href="{% url 'tasks-history' %}" class="sidebar-col">Historie anzeigen</a></h3>
+                    </td>
+                </tr>
+            </table>
         </div>
 
         <div class="content" style="margin-top: -4em;">
