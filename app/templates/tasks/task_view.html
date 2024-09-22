@@ -15,12 +15,12 @@
                 <a href="{% url 'tasks-add' %}" class="btn">Hinzufügen</a>
                 <a href="{% url 'tasks-history' %}" class="btn">Historie</a>
                 <table align="right" style="margin-top: -1em;">
-                    <tr>
-                        <form style="text-align: right;" method="GET" action="{% url 'tasks' %}">
+                    <form style="text-align: right;" method="GET" action="{% url 'tasks' %}"></form>
+                        <tr>
                             <td>{{ search_form }}</td>
                             <td><button type="submit" class="btn">Suchen</button></td>
-                        </form>
-                    </tr>
+                        </tr>
+                    </form>
                 </table>
             </h3>
         </div>
