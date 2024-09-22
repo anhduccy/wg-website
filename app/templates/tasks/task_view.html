@@ -13,7 +13,7 @@
             <h1 style="text-transform: uppercase;">Alle Aufgaben</h1>
             <table>
                 <tr>
-                    <form style="text-align: right;" method="GET" action="{% url 'tasks' %}">
+                    <form method="GET" action="{% url 'tasks' %}">
                         <td>{{ search_form }}</td>
                         <td><button type="submit" class="btn">Suchen</button></td>
                     </form>
