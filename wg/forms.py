@@ -147,7 +147,7 @@ class TaskCheckboxForm(forms.ModelForm):
         if task_obj.isDone != 1 and task.isDone == True:
             task.lastChangeDate = datetime.datetime.now() #DATE AND TIMESTAMP
             task.save()
-            TaskLogEvent.objects.create(event=TaskLogEventDescription.isDone_changed.value, task=task, ipAddress=getIP(request))
+            TaskLogEvent.objects.create(event=f"Aufgabe für {task.responsibility} abgehakt" , task=task, ipAddress=getIP(request))
 
             #POINTS AWARD
             resp = User.objects.get(pk=task.responsibility.id_user)
