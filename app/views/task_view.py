@@ -65,6 +65,13 @@ def detail_view(request, id_task=None):
 
 def history_view(request):
     tasks = TaskLogEvent.objects.all().order_by('-eventDate', '-task_id')
+
+    search_form = TaskSearchForm(request.GET or None)
+    if search_form.is_valid():
+        query = search_form.cleaned_data.get('query')
+        if query:
+            tasks = tasks.filter(Q(task__title__icontains=query))
+
     tasks_t = []
     for task in tasks:
         try:
@@ -72,6 +79,6 @@ def history_view(request):
         except: task_t = [task, task.ipAddress]
         tasks_t.append(task_t)
 
-    context = {'tasks': tasks_t}
+    context = {'tasks': tasks_t, 'search_form': search_form}
     template = loader.get_template("tasks/task_history_view.html")
     return HttpResponse(template.render(request=request, context=context))

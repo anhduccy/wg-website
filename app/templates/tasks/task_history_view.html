@@ -3,6 +3,7 @@
 <html>
     <head>
         <link rel="stylesheet" href="{% static 'main.css' %}">
+        <link rel="stylesheet" href="{% static 'form.css' %}">
         <style>
             .cell td {
                 border:1px solid gray;
@@ -13,10 +14,19 @@
         <div class="header">
             {% include 'sidebar.html' %}
             <h1 style="text-transform: uppercase;">Aufgabenhistorie</h1>
-            <h3><a href="{% url 'tasks' %}" class="btn">Alle Aufgaben</a> <a href="{% url 'tasks-add' %}" class="sidebar-col" style="padding-left: 1em;">Aufgabe hinzufügen</a></h3>
+            <form method="GET" action="{% url 'tasks-history' %}">
+                <div style="display: flex; align-items: center;">
+                    {{ search_form }}
+                    <button type="submit" class="btn">Suche starten</button>
+                </div>
+            </form>
+            <table style="margin-top: 0.55em;">
+                <td> <a href="{% url 'tasks-add' %}" class="sidebar-col" style="padding-left: 1em;">Neue Aufgabe hinzufügen</a></td>
+                <td><a href="{% url 'tasks' %}" class="sidebar-col">Aufgabenliste anzeigen</a></td>
+            </table>
         </div>
 
-        <div class="content">
+        <div class="content" style="margin-top: -4em;">
             <table style="width:100%; min-width: 1200px; text-align: left; border-collapse: collapse; border:none" class="list">
                     <tr style="color: #006400;">
                         <th>Aufgabe</th>
