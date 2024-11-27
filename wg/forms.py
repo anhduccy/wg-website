@@ -182,28 +182,29 @@ class CurrencyInput(forms.NumberInput):
     template_name = "currency.html"
 
 class TransactionForm(forms.ModelForm):
+    isCommunal = forms.BooleanField(required=False, label='', widget=CustomCheckboxInput())
     title = forms.CharField(widget=forms.TextInput(attrs={'class': 'cell'}))
     sum = forms.DecimalField(widget=CurrencyInput(attrs={'class': 'cell'}))
 
     class Meta:
         model = Transaction
-        fields = ('title', 'sum')
+        fields = ('isCommunal', 'title', 'sum')
 
     def save(self, commit=True):
         transaction = super(TransactionForm, self).save(commit=False)
-        try: 
+        try: #Instance is edited
             transactionObj = Transaction.objects.get(pk=transaction.id_transaction)
             if transactionObj.title == transaction.title and float(transactionObj.sum) == float(transaction.sum):
-                pass
+                transaction.isCommunal = self.cleaned_data['isCommunal']
+                transaction.save()
             else:
                 transactionObj.isActive = 0
                 transactionObj.save()
-                Transaction.objects.create(title=transaction.title, sum=transaction.sum)
-        except:
-            transaction.title = self.cleaned_data["title"]
-            transaction.sum = self.cleaned_data["sum"]
+                Transaction.objects.create(isCommunal= transaction.isCommunal, title=transaction.title, sum=transaction.sum)
+        except: #Create new instance
+            transaction.title = self.cleaned_data['title']
+            transaction.sum = self.cleaned_data['sum']
             transaction.save()
-
 
     def delete(self, request):
         try: obj = Transaction.objects.get(pk=request.get('delete'))

@@ -7,7 +7,7 @@ from app.models import Transaction, TransactionBillEntry, Bill
 from wg.forms import TransactionForm
 
 def list_view(request):
-    TransactionFormSet = modelformset_factory(model=Transaction, form=TransactionForm, fields = ('title', 'sum'))
+    TransactionFormSet = modelformset_factory(model=Transaction, form=TransactionForm)
     formset = TransactionFormSet(queryset=Transaction.objects.filter(isActive=1))
 
     if request.method == "POST":

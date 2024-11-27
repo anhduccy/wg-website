@@ -17,6 +17,7 @@
                 <table style="width: 100%;" class="list">
 
                     <tr style="color: #006400;">
+                        <th>Gemeinschaftliche Teilung</th>
                         <th>Verwendungszweck</th>
                         <th>Betrag in Euro</th>
                     </tr>
@@ -26,15 +27,16 @@
                         {% for form in formset %}
                             {% if form.instance.isActive == 1 %}
                             <tr>
-                                <td style="width: 60%">{{ form.title }}</td>
+                                <td style="width: 5%">{{ form.isCommunal }}</td>
+                                <td style="width: 65%">{{ form.title }}</td>
                                 <td style="width: 20%">{{ form.sum }}</td>
                                 <!--<td>{% divide form.sum 3 %}</td>-->
-                                <td><button type="submit" name="save" class="table-btn" value="{{ form.instance.id_transaction }}">Speichern</button></td>
-                                <td><button type="submit" name="delete" class="table-btn delete" value="{{ form.instance.id_transaction }}">Löschen</button></td>
+                                <td style="width: 5%"><button type="submit" name="save" class="table-btn" value="{{ form.instance.id_transaction }}">Speichern</button></td>
+                                <td style="width: 5%"><button type="submit" name="delete" class="table-btn delete" value="{{ form.instance.id_transaction }}">Löschen</button></td>
                             </tr>
-                            {% for hidden in form.hidden_fields %}
+                                {% for hidden in form.hidden_fields %}
                                     {{ hidden }}
-                            {% endfor %}
+                                {% endfor %}
                             {% endif %}
                         {% endfor %}
                     </form>
