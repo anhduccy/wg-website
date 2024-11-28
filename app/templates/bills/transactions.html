@@ -14,33 +14,26 @@
         </div>
 
         <div class="content">
-                <table style="width: 100%;" class="list">
-
-                    <tr style="color: #006400;">
-                        <th>Gemeinschaftliche Teilung</th>
-                        <th>Verwendungszweck</th>
-                        <th>Betrag in Euro</th>
-                    </tr>
+                <div class="list" style="width: 100%;">
                     <form method="post">
                         {% csrf_token %}
                         {{formset.management_form }}
                         {% for form in formset %}
                             {% if form.instance.isActive == 1 %}
-                            <tr>
-                                <td style="width: 5%">{{ form.isCommunal }}</td>
-                                <td style="width: 65%">{{ form.title }}</td>
-                                <td style="width: 20%">{{ form.sum }}</td>
-                                <!--<td>{% divide form.sum 3 %}</td>-->
-                                <td style="width: 5%"><button type="submit" name="save" class="table-btn" value="{{ form.instance.id_transaction }}">Speichern</button></td>
-                                <td style="width: 5%"><button type="submit" name="delete" class="table-btn delete" value="{{ form.instance.id_transaction }}">Löschen</button></td>
-                            </tr>
+                            <table class="row" style="width: 100%; margin-top: -10px;">
+                                <td style="width: 150px;">{{ form.isEssential }} <p style="padding-top: 5px;">{% if form.instance.isEssential == 1 %} Essenziell {% else %} Gemeinschaftlich {% endif %}</p></td>
+                                <td>{{ form.title }}</td>
+                                <td style="width: 15%;">{{ form.sum }}</td>
+                                <td style="width: 100px; padding-left: 35px;"><button type="submit" name="save" class="table-btn" value="{{ form.instance.id_transaction }}">Speichern</button></td>
+                                <td style="width: 100px;"><button type="submit" name="delete" class="table-btn delete" value="{{ form.instance.id_transaction }}">Löschen</button></td>
+                            </table>
                                 {% for hidden in form.hidden_fields %}
                                     {{ hidden }}
                                 {% endfor %}
                             {% endif %}
                         {% endfor %}
                     </form>
-                </table>
+                </div>
         </div>
     </body>
 </html>

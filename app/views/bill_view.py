@@ -36,7 +36,7 @@ def pdf_view(request, id_bill=None):
         transaction = Transaction.objects.get(pk=entry.transaction.id_transaction)
         tuple = (transaction, transaction.sum/3)
         transactions.append(tuple)
-        if transaction.isCommunal: 
+        if transaction.isEssential: 
             sum_notCommunal += transaction.sum
         sum += transaction.sum
 
@@ -48,7 +48,7 @@ def pdf_view(request, id_bill=None):
         entries_last_month = TransactionBillEntry.objects.filter(bill=bill_last_month.id_bill)
         for entry in entries_last_month:
             transaction = Transaction.objects.get(pk=entry.transaction.id_transaction)
-            if transaction.isCommunal: 
+            if transaction.isEssential: 
                 sum_last_month_notCommunal += transaction.sum
             sum_last_month += transaction.sum
     
