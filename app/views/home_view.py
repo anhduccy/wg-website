@@ -42,22 +42,11 @@ def view(request):
 
     today = datetime.date.today().strftime("%Y-%m-%d")
     
-    try:
-        obj = Dishplan.objects.get(date=today) 
-        dishOfTheDay = Dish.objects.get(pk=obj.dish.id_dish)
-    except: dishOfTheDay = None
-    
-    try: 
-        weekday_of_dishType = DishplanSettings.objects.get(pk=datetime.date.today().weekday())
-        dishType = DishType.objects.get(pk=weekday_of_dishType.dishType.id_dishType)  
-    except:
-        dishType = None
-
     try: 
         bill = Bill.objects.filter(deadlineDate__gte=today).order_by('deadlineDate').first()
     except: bill = None
 
     template = loader.get_template("home_view.html")
-    context = {'users': usersTuple, 'dish': dishOfTheDay, 'dishType': dishType, 'tasks': formset, 'bill': bill}
+    context = {'users': usersTuple, 'tasks': formset, 'bill': bill}
 
     return HttpResponse(template.render(request=request, context=context))
