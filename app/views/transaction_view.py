@@ -21,7 +21,7 @@ def list_view(request):
                         form.delete(request.POST)
                 except: pass
 
-    formset = TransactionFormSet(queryset=Transaction.objects.filter(isActive=1))
+    formset = TransactionFormSet(queryset=Transaction.objects.order_by('isEssential').filter(isActive=1))
 
     context = {'formset': formset}
     template = loader.get_template("bills/transactions.html")
