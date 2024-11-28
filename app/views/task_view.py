@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.template import loader
 from django.forms import modelformset_factory
 from django.db.models import Q, Case, Value, When
+from django.core.paginator import Paginator
 
 from app.models import Task, TaskLogEvent, IP, User
 from wg.forms import TaskAddForm, TaskEditForm, TaskCheckboxForm, TaskSearchForm
@@ -78,6 +79,9 @@ def history_view(request):
             task_t = [task,  IP.objects.get(pk=task.ipAddress).user.name]
         except: task_t = [task, task.ipAddress]
         tasks_t.append(task_t)
+    
+    page_number = request.GET.get('page', 1)
+    tasks_t = Paginator(tasks_t, 15).get_page(page_number) 
 
     context = {'tasks': tasks_t, 'search_form': search_form}
     template = loader.get_template("tasks/task_history_view.html")

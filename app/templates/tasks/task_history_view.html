@@ -48,5 +48,20 @@
                 {% endfor %}
             </table>
         </div>
+        <div style="margin-top: 1em; float:right;">
+            <span>
+              {% if tasks.has_previous %}
+                <a href="?page=1">&#9664;&#9664;</a>
+                <a href="?page={{ tasks.previous_page_number }}">&#9664;	</a>
+              {% endif %}
+          
+              <span>{{ tasks.number }} von {{ tasks.paginator.num_pages }}</span>
+
+              {% if tasks.has_next %}
+                <a href="?page={{ tasks.next_page_number }}">&#9654;</a>
+                <a href="?page={{ tasks.paginator.num_pages }}">&#9654;&#9654;</a>
+              {% endif %}
+            </span>
+          </div>
     </body>
 </html>
