@@ -11,7 +11,7 @@ def list_view(request):
     formset = TransactionFormSet(queryset=Transaction.objects.filter(isActive=1))
 
     if request.method == "POST":
-        formset = TransactionFormSet(request.POST, queryset=Transaction.objects.filter(isActive=1))
+        formset = TransactionFormSet(request.POST, queryset=Transaction.objects.order_by('isEssential').filter(isActive=1))
         if formset.is_valid():
             for form in formset:
                 try:
