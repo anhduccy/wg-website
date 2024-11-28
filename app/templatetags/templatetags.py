@@ -33,4 +33,6 @@ def is_today(self):
 
 @register.filter
 def is_past(self):
-    return date.today() > self.date()
+    if self is not None:
+        return date.today() > self.date()
+    return True

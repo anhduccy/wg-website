@@ -31,19 +31,25 @@ def pdf_view(request, id_bill=None):
     bill = Bill.objects.get(pk=id_bill)
     entries = TransactionBillEntry.objects.filter(bill=id_bill)
     sum = 0
+    sum_notCommunal = 0
     for entry in entries:
         transaction = Transaction.objects.get(pk=entry.transaction.id_transaction)
         tuple = (transaction, transaction.sum/3)
         transactions.append(tuple)
+        if transaction.isCommunal: 
+            sum_notCommunal += transaction.sum
         sum += transaction.sum
 
     #SUM LAST MONTH
     bill_last_month = Bill.objects.filter(deadlineDate__lt=bill.deadlineDate).last()
     sum_last_month = 0 
+    sum_last_month_notCommunal = 0
     if(bill_last_month != None): 
         entries_last_month = TransactionBillEntry.objects.filter(bill=bill_last_month.id_bill)
         for entry in entries_last_month:
             transaction = Transaction.objects.get(pk=entry.transaction.id_transaction)
+            if transaction.isCommunal: 
+                sum_last_month_notCommunal += transaction.sum
             sum_last_month += transaction.sum
     
     context = {
@@ -51,9 +57,13 @@ def pdf_view(request, id_bill=None):
         'transactions': transactions,
         'user_info': wg.secrets.UserInfo,
         'sumWG': sum,
+        'sumWG_notCommunal': sum_notCommunal,
         'sum': sum/3,
+        'sum_notCommunal': sum_notCommunal/3,
         'sumWG_last_month': sum - sum_last_month if sum_last_month > 0 else 0,
+        'sumWG_last_month_notCommunal': sum_notCommunal - sum_last_month_notCommunal if sum_last_month_notCommunal > 0 else 0,
         'sum_last_month': sum/3 - sum_last_month/3 if sum_last_month/3 > 0 else 0,
+        'sum_last_month_notCommunal': sum_notCommunal/3 - sum_last_month_notCommunal/3 if sum_last_month_notCommunal/3 > 0 else 0,
         'next_date': bill.deadlineDate + dateutil.relativedelta(months=1)
     }
     response = wg.renderer.render_to_pdf("pdf/bill.html", context)
