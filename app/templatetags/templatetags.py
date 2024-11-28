@@ -36,3 +36,9 @@ def is_past(self):
     if self is not None:
         return date.today() > self.date()
     return True
+
+@register.filter
+def is_past_and_not_same_month(self):
+    if self is not None:
+        return date.today() > self.date() and date.today().month != self.date().month
+    return True
