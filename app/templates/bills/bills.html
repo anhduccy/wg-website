@@ -13,14 +13,14 @@
             <table>
                 <tr>
                     <td><a href="{% url 'transactions' %}" class="btn">Transaktionen</a></td>
+                    {% if last_bill.deadlineDate|is_past_and_not_same_month %}
                     <td>
                         <form method="post">
-                            {%csrf_token%}
-                            {% if last_bill.deadlineDate|is_past_and_not_same_month %}
+                            {%csrf_token%}                         
                             <button type="submit" class="btn">Neue Rechnung erstellen</button>
-                            {% endif %}
                         </form>
                     </td>
+                    {% endif %}
                 </tr>
             </table>
         </div>
