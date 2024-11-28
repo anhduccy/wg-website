@@ -20,12 +20,13 @@
                         {{formset.management_form }}
                         {% for form in formset %}
                             {% if form.instance.isActive == 1 %}
-                            <table class="row" style="width: 100%; margin-top: -10px;">
-                                <td style="width: 150px;">{{ form.isEssential }} <p style="padding-top: 5px;">{% if form.instance.isEssential == 1 %} Essenziell {% else %} Gemeinschaftlich {% endif %}</p></td>
-                                <td>{{ form.title }}</td>
-                                <td style="width: 15%;">{{ form.sum }}</td>
-                                <td style="width: 100px; padding-left: 35px;"><button type="submit" name="save" class="table-btn" value="{{ form.instance.id_transaction }}">Speichern</button></td>
-                                <td style="width: 100px;"><button type="submit" name="delete" class="table-btn delete" value="{{ form.instance.id_transaction }}">Löschen</button></td>
+                            <table class="row" style="width: 100%; margin-top: -15px;">
+                                <td style="width: 40px;">{{ form.isEssential }}</td>
+                                <td style="width: 150px"><p style="padding-top: 5px;">{% if form.instance.isEssential == 1 %} Essenziell{% endif %}</p></td>
+                                <td style>{{ form.title }}</td>
+                                <td style="width: 10%;">{{ form.sum }}</td>
+                                <td style="width: 80px; padding-left: 35px;"><button type="submit" name="save" class="table-btn" value="{{ form.instance.id_transaction }}">Speichern</button></td>
+                                <td style="width: 80px;"><button type="submit" name="delete" class="table-btn delete" value="{{ form.instance.id_transaction }}">Löschen</button></td>
                             </table>
                                 {% for hidden in form.hidden_fields %}
                                     {{ hidden }}

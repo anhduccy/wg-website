@@ -1,8 +1,7 @@
-.cell {
+.cell, .cell-white {
     border: solid 1px darkgray;
     font-size:medium;
     font-family: "Avenir Next";
-    background-color: #F3F2ED;
     color: #006400;
     padding-right: 0em;
     padding-top: 0.75em;
@@ -10,6 +9,14 @@
     display: block;
     width: 100%;
     text-indent: 1em;
+}
+
+.cell {
+    background-color: #F3F2ED;
+}
+
+.cell-white{
+    background-color: white;
 }
 
 .cell-test { 

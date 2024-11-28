@@ -183,8 +183,8 @@ class CurrencyInput(forms.NumberInput):
 
 class TransactionForm(forms.ModelForm):
     isEssential = forms.BooleanField(required=False, label='', widget=CustomCheckboxInput())
-    title = forms.CharField(widget=forms.TextInput(attrs={'class': 'cell'}))
-    sum = forms.DecimalField(widget=CurrencyInput(attrs={'class': 'cell'}))
+    title = forms.CharField(widget=forms.TextInput(attrs={'class': 'cell-white'}))
+    sum = forms.DecimalField(widget=CurrencyInput(attrs={'class': 'cell-white'}))
 
     class Meta:
         model = Transaction
