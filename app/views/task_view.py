@@ -65,13 +65,14 @@ def detail_view(request, id_task=None):
     return HttpResponse(template.render(request=request, context=context))
 
 def history_view(request):
-    tasks = TaskLogEvent.objects.all().order_by('-eventDate', '-task_id')
-
+    tasks = TaskLogEvent.objects
     search_form = TaskSearchForm(request.GET or None)
     if search_form.is_valid():
         query = search_form.cleaned_data.get('query')
         if query:
             tasks = tasks.filter(Q(task__title__icontains=query))
+
+    tasks = tasks.order_by('-eventDate', '-task_id')[0:74]
 
     tasks_t = []
     for task in tasks:
