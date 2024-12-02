@@ -4,6 +4,14 @@
     <head>
         <link rel="stylesheet" href="{% static 'main.css' %}">
         <link rel="stylesheet" href="{% static 'form.css' %}">
+        <link rel="stylesheet" href="{% static 'table.css' %}">
+        <style>
+            @media (max-width: 900px) {
+                .responsive-card {
+                    min-width: 100%; /* Full width on smaller screens */
+                }
+            }
+        </style>
     </head>
     <body>
         <div class="header">
@@ -23,23 +31,20 @@
             </table>
         </div>
 
-        <div class="content" style="margin-top: -4em;">
-            <div class="list">
-                <table>
-                    <td>
-                        <form method="post">
-                            {% csrf_token %}
-                            {{ formset.management_form }}
-                            {% for form in formset %}
-                                <tr>{% include 'tasks/task_card.html' %}</tr>
-                                {% for hidden in form.hidden_fields %}
-                                    {{ hidden }}
-                                {% endfor %}
-                            {% endfor %}
-                        </form>
-                    </td>
-                </table>
-            </div>
+        <div class="content">
+                <form method="post">
+                    <div class="responsive-table">
+                    {% csrf_token %}
+                    {{ formset.management_form }}
+                    {% for form in formset %}
+                        <div class="responsive-card">{% include 'tasks/task_card.html' %}
+                        {% for hidden in form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+                        </div>
+                    {% endfor %}
+                    </div>
+                </form>
         </div>
     </body>
 </html>
