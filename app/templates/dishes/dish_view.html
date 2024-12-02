@@ -3,6 +3,7 @@
 <html>
     <head>
         <link rel="stylesheet" href="{% static 'main.css' %}">
+        <link rel="stylesheet" href="{% static 'form.css' %}">
     </head>
     <body>
         <div class="header">
@@ -10,10 +11,16 @@
             {% include 'sidebar.html' %}
             {% endblock content %}
             <h1 style="text-transform: uppercase;">Alle Gerichte</h1>
-            <h3><a href="{% url 'dishes-add' %}" class="btn">Gericht hinzufügen</a></h3>
+            <form method="GET" action="{% url 'dishes' %}">
+                <div style="display: flex; align-items: center;">
+                    {{ search_form }}
+                    <button type="submit" class="btn">Suche starten</button>
+                </div>
+            </form>
+            <table style="margin-top: 0.5em;"><td><a href="{% url 'dishes-add' %}" class="sidebar-col">Gericht hinzufügen</a></td></table>
         </div>
 
-        <div class="content">
+        <div style="margin-top: -4em;" class="content">
             <div class="list">
                 <table>
                 <td>

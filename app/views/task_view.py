@@ -6,7 +6,7 @@ from django.db.models import Q, Case, Value, When
 from django.core.paginator import Paginator
 
 from app.models import Task, TaskLogEvent, IP, User
-from wg.forms import TaskAddForm, TaskEditForm, TaskCheckboxForm, TaskSearchForm
+from wg.forms import TaskAddForm, TaskEditForm, TaskCheckboxForm, SearchForm
 import datetime
 
 from app.task_log_event import *
@@ -15,7 +15,7 @@ from app.functions import *
 def list_view(request):
     tasks = Task.objects.filter(isDone=0).annotate(custom_order=Case(When(frequency="-1", then=Value(1)), default=Value(0))).order_by('custom_order','deadlineDate')
 
-    search_form = TaskSearchForm(request.GET or None)
+    search_form = SearchForm(request.GET or None)
     if search_form.is_valid():
         query = search_form.cleaned_data.get('query')
         if query:
@@ -66,7 +66,7 @@ def detail_view(request, id_task=None):
 
 def history_view(request):
     tasks = TaskLogEvent.objects
-    search_form = TaskSearchForm(request.GET or None)
+    search_form = SearchForm(request.GET or None)
     if search_form.is_valid():
         query = search_form.cleaned_data.get('query')
         if query:

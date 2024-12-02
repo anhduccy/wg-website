@@ -1,15 +1,22 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template import loader
+from django.db.models import Q
 
 from app.models import *
 from app.models import Dish
-from wg.forms import DishForm
+from wg.forms import DishForm, SearchForm
 
 def list_view(request): 
     dishes = Dish.objects.all()
 
-    context = {'dishes': dishes}
+    search_form = SearchForm(request.GET or None)
+    if search_form.is_valid():
+        query = search_form.cleaned_data.get('query')
+        if query:
+            dishes = dishes.filter(Q(name__icontains=query))
+
+    context = {'dishes': dishes, 'search_form': search_form}
     template = loader.get_template("dishes/dish_view.html")
     return HttpResponse(template.render(request=request, context=context))
 
