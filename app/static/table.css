@@ -66,3 +66,15 @@ input::-webkit-inner-spin-button {
 input[type=number]{
     -moz-appearance: textfield;
 }
+
+.responsive-table {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping */;
+}
+
+.responsive-card {
+    flex: 1; /* Grow to fill space */
+    min-width: calc(50% - 1rem); /* Two-column layout, accounting for the gap */
+    padding-left: 0.5em;
+    padding-right: 0.5em
+}

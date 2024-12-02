@@ -4,6 +4,14 @@
     <head>
         <link rel="stylesheet" href="{% static 'main.css' %}">
         <link rel="stylesheet" href="{% static 'form.css' %}">
+        <link rel="stylesheet" href="{% static 'table.css' %}">
+        <style>
+            @media (max-width: 800px) {
+                .responsive-card {
+                    min-width: 100%; /* Full width on smaller screens */
+                }
+            }
+        </style>
     </head>
     <body>
         <div class="header">
@@ -20,15 +28,13 @@
             <table style="margin-top: 0.5em;"><td><a href="{% url 'dishes-add' %}" class="sidebar-col">Gericht hinzufügen</a></td></table>
         </div>
 
-        <div style="margin-top: -4em;" class="content">
-            <div class="list">
-                <table>
-                <td>
-                    {% for dish in dishes %}
-                    <tr>{% include 'dishes/dish_card.html'%}</tr>
-                    {% endfor %}
-                </td>
-                </table>
+        <div class="content">
+            <div class="responsive-table">
+                {% for dish in dishes %}
+                <div class="responsive-card">
+                    {% include 'dishes/dish_card.html'%}
+                </div>
+                {% endfor %}
             </div>
         </div>
     </body>
