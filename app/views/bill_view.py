@@ -35,7 +35,7 @@ def pdf_view(request, id_bill=None):
             'transactions': result[0], #transactions
             'sumWG': result[1], #sum
             'sumWG_notCommunal': result[2], #sum_notCommunal
-            'sum': result[3], #sum_per_user
+            'sum': result[3], #sum_communal_per_user
             'sum_notCommunal': result[4], #sum_notCommunal_per_user
             'next_date': bill.deadlineDate + dateutil.relativedelta(months=1)
         })
@@ -63,24 +63,27 @@ def sumForBill(id_bill):
     transactions: list[tuple[Transaction, float]] = []
     entries: list[TransactionBillEntry] = TransactionBillEntry.objects.filter(bill=id_bill)
     users_amount: int = User.objects.all().count()
-    users_amount_notCommunal: int = User.objects.filter(isCommunal=1).count()
-    if users_amount_notCommunal == 0: users_amount_notCommunal = users_amount
-    sum: float = 0
+    users_amount_communal: int = User.objects.filter(isCommunal=1).count()
+    if users_amount_communal == 0: users_amount_communal = users_amount
+    sum_communal: float = 0
+    sum_communal_per_user: float = 0
     sum_notCommunal: float = 0
+    sum_notCommunal_per_user: float = 0
     for entry in entries:
         transaction = Transaction.objects.get(pk=entry.transaction.id_transaction)
         if transaction.isEssential:
             result_tuple: tuple[Transaction, float] = (transaction, transaction.sum/users_amount)
+            sum_communal += transaction.sum
             sum_notCommunal += transaction.sum
-        else:
-            result_tuple: tuple[Transaction, float] = (transaction, transaction.sum/users_amount_notCommunal)
-        sum += transaction.sum
+            sum_communal_per_user += transaction.sum/users_amount
+            sum_notCommunal_per_user += transaction.sum/users_amount
+        else: #isCommunal
+            result_tuple: tuple[Transaction, float] = (transaction, transaction.sum/users_amount_communal)
+            sum_communal += transaction.sum
+            sum_communal_per_user += transaction.sum/users_amount_communal
         transactions.append(result_tuple)
-
-    sum_per_user: float = sum/users_amount
-    sum_notCommunal_per_user: float = sum/users_amount_notCommunal
     
-    return transactions, sum, sum_notCommunal, sum_per_user, sum_notCommunal_per_user
+    return transactions, sum_communal, sum_notCommunal, sum_communal_per_user, sum_notCommunal_per_user
 
 def createBill(now, deadline, transactions):
     if Transaction.objects.all().count() != 0:
