@@ -1,12 +1,11 @@
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
 from django.template import loader
 import datetime
 import wg.renderer
 import wg.secrets
 import dateutil.relativedelta as dateutil
 
-from app.models import Bill, TransactionBillEntry, Transaction
+from app.models import Bill, TransactionBillEntry, Transaction, User
 
 def list_view(request):
     bills = Bill.objects.all().order_by('-deadlineDate')
@@ -24,54 +23,64 @@ def list_view(request):
     
     return HttpResponse(template.render(request=request, context=context))
 
-def pdf_view(request, id_bill=None):
-    transactions = []
-    
-    #SUM THIS MONTH
-    bill = Bill.objects.get(pk=id_bill)
-    entries = TransactionBillEntry.objects.filter(bill=id_bill)
-    sum = 0
-    sum_notCommunal = 0
-    for entry in entries:
-        transaction = Transaction.objects.get(pk=entry.transaction.id_transaction)
-        tuple = (transaction, transaction.sum/3)
-        transactions.append(tuple)
-        if transaction.isEssential: 
-            sum_notCommunal += transaction.sum
-        sum += transaction.sum
 
-    #SUM LAST MONTH
-    bill_last_month = Bill.objects.filter(deadlineDate__lt=bill.deadlineDate).last()
-    sum_last_month = 0 
-    sum_last_month_notCommunal = 0
-    if(bill_last_month != None): 
-        entries_last_month = TransactionBillEntry.objects.filter(bill=bill_last_month.id_bill)
-        for entry in entries_last_month:
-            transaction = Transaction.objects.get(pk=entry.transaction.id_transaction)
-            if transaction.isEssential: 
-                sum_last_month_notCommunal += transaction.sum
-            sum_last_month += transaction.sum
+def pdf_view(request, id_bill=None):
+    context = {'user_info': wg.secrets.UserInfo}
+
+    bill: Bill = Bill.objects.get(pk=id_bill)
+    if bill is not None:
+        result = sumForBill(id_bill=bill.id_bill) 
+        context.update({
+            'bill': bill,
+            'transactions': result[0], #transactions
+            'sumWG': result[1], #sum
+            'sumWG_notCommunal': result[2], #sum_notCommunal
+            'sum': result[3], #sum_per_user
+            'sum_notCommunal': result[4], #sum_notCommunal_per_user
+            'next_date': bill.deadlineDate + dateutil.relativedelta(months=1)
+        })
+
+    bill_last_month: Bill = Bill.objects.filter(deadlineDate__lt=bill.deadlineDate).last()
+    if bill_last_month is not None:
+        result_last_month = sumForBill(id_bill=bill_last_month.id_bill)
+        context.update({
+            'sumWG_last_month': result[1] - result_last_month[1] if result_last_month[1] > 0 else 0,
+            'sumWG_last_month_notCommunal': result[2] - result_last_month[2] if result_last_month[2] > 0 else 0,
+            'sum_last_month': result[3] - result_last_month[3] if result_last_month[3] > 0 else 0,
+            'sum_last_month_notCommunal': result[4] - result_last_month[4] if result_last_month[4] > 0 else 0,
+        })
     
-    context = {
-        'bill': bill,
-        'transactions': transactions,
-        'user_info': wg.secrets.UserInfo,
-        'sumWG': sum,
-        'sumWG_notCommunal': sum_notCommunal,
-        'sum': sum/3,
-        'sum_notCommunal': sum_notCommunal/3,
-        'sumWG_last_month': sum - sum_last_month if sum_last_month > 0 else 0,
-        'sumWG_last_month_notCommunal': sum_notCommunal - sum_last_month_notCommunal if sum_last_month_notCommunal > 0 else 0,
-        'sum_last_month': sum/3 - sum_last_month/3 if sum_last_month/3 > 0 else 0,
-        'sum_last_month_notCommunal': sum_notCommunal/3 - sum_last_month_notCommunal/3 if sum_last_month_notCommunal/3 > 0 else 0,
-        'next_date': bill.deadlineDate + dateutil.relativedelta(months=1)
-    }
     response = wg.renderer.render_to_pdf("pdf/bill.html", context)
 
     if response.status_code == 404:
         print("Bill-ERROR")
 
     return response
+
+
+#---FUNCTIONS---#
+def sumForBill(id_bill):
+    transactions: list[tuple[Transaction, float]] = []
+    entries: list[TransactionBillEntry] = TransactionBillEntry.objects.filter(bill=id_bill)
+    users_amount: int = User.objects.all().count()
+    users_amount_notCommunal: int = User.objects.filter(isCommunal=1).count()
+    if users_amount_notCommunal == 0: users_amount_notCommunal = users_amount
+    sum: float = 0
+    sum_notCommunal: float = 0
+    for entry in entries:
+        transaction = Transaction.objects.get(pk=entry.transaction.id_transaction)
+        if transaction.isEssential:
+            result_tuple: tuple[Transaction, float] = (transaction, transaction.sum/users_amount)
+            sum_notCommunal += transaction.sum
+        else:
+            result_tuple: tuple[Transaction, float] = (transaction, transaction.sum/users_amount_notCommunal)
+        sum += transaction.sum
+        transactions.append(result_tuple)
+
+    sum_per_user: float = sum/users_amount
+    sum_notCommunal_per_user: float = sum/users_amount_notCommunal
+    
+    return transactions, sum, sum_notCommunal, sum_per_user, sum_notCommunal_per_user
 
 def createBill(now, deadline, transactions):
     if Transaction.objects.all().count() != 0:

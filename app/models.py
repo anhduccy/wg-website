@@ -1,5 +1,4 @@
 from django.db import models
-from django import forms
 from django.urls import reverse
 import datetime
 
@@ -10,6 +9,7 @@ class User(models.Model):
     email = models.CharField(max_length=45)
     password = models.CharField(max_length=45)    
     points = models.IntegerField()
+    isCommunal = models.BooleanField(default=1)
 
     class Meta:
         managed = True
